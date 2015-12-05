@@ -44,7 +44,7 @@ public class databaseConnection {
         }
     }
 
-    public static closeConnection() {
+    public static void closeConnection() {
         try {
             connection.close();
             System.out.println("INFO: The connection is closed");
