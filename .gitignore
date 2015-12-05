@@ -3,3 +3,4 @@ desktop.ini
 out/
 *.iml
 mhcConfig.java
+target/
