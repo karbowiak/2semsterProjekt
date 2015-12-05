@@ -2,4 +2,4 @@ desktop.ini
 .idea
 out/
 *.iml
-config.java
+mhcConfig.java
