@@ -6,6 +6,7 @@ import guiLayer.startUpFrame;
 public class main {
     private static JPanel startupFrame;
 
+    // Start up everything
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         // Setup the window decorator
         JFrame.setDefaultLookAndFeelDecorated(true);
