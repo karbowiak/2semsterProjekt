@@ -2,32 +2,18 @@ package guiLayer;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
 import java.awt.EventQueue;
-import javax.swing.JInternalFrame;
-import javax.swing.JToolBar;
+import javax.swing.*;
 import java.awt.BorderLayout;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JSeparator;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JTabbedPane;
-import javax.swing.JPanel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.Date;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JList;
-import javax.swing.JTextPane;
-import javax.swing.JComboBox;
 
 public class roomBooking extends JPanel {
     private JTextField loggedInUserInformation;
     public DatePicker fromDatePicker;
     public DatePicker toDatePicker;
 
-    public roomBooking() {
+    public roomBooking(final JFrame frame) {
         setLayout(null);
         setBounds(100, 100, 660, 430);
         setVisible(true);
@@ -37,14 +23,17 @@ public class roomBooking extends JPanel {
 
         JButton btnRoomBooking = new JButton("Room Booking");
         btnRoomBooking.setEnabled(false);
-        btnRoomBooking.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
         btnRoomBooking.setBounds(10, 11, 120, 23);
         add(btnRoomBooking);
 
         JButton btnFacilitiesBooking = new JButton("Facilities Booking");
+        btnFacilitiesBooking.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                facilitiesBooking facilitiesBooking = new facilitiesBooking(frame);
+                frame.setContentPane(facilitiesBooking);
+            }
+        });
         btnFacilitiesBooking.setBounds(140, 11, 120, 23);
         add(btnFacilitiesBooking);
 
