@@ -1,12 +1,8 @@
 package guiLayer;
 
-import java.awt.EventQueue;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.Date;
 
 public class startUpFrame extends JPanel {
     private static JTextField employeeName;

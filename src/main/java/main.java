@@ -1,17 +1,10 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import guiLayer.facilitiesBooking;
-import guiLayer.roomBooking;
 import guiLayer.startUpFrame;
 
 public class main {
     private static JPanel startupFrame;
-    private static JTextField employeeName;
-    private static JTextField employeeID;
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         // Setup the window decorator
@@ -20,7 +13,6 @@ public class main {
 
         // Load the UI
         EventQueue.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 try {
                     final JFrame frame = new JFrame();
