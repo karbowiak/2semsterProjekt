@@ -3,16 +3,12 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import com.michaelbaranov.microba.calendar.DatePicker;
 import guiLayer.roomBooking;
-
-import java.util.Date;
 
 public class main {
     private static JPanel startupFrame;
     private static JTextField employeeName;
     private static JTextField employeeID;
-    private static DatePicker datepicker;
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         // Setup the window decorator

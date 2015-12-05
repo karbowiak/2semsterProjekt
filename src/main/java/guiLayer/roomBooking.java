@@ -1,7 +1,6 @@
 package guiLayer;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
-
 import java.awt.EventQueue;
 import javax.swing.JInternalFrame;
 import javax.swing.JToolBar;
