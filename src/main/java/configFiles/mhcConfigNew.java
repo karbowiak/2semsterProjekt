@@ -1,4 +1,4 @@
-package config;
+package configFiles;
 
 public class mhcConfigNew {
     public static final String driver = "";

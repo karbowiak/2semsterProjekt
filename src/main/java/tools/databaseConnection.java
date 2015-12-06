@@ -1,14 +1,14 @@
-package databaseLayer;
-import config.mhcConfig;
+package tools;
+import configFiles.mhcConfig;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 
 public class databaseConnection {
-    private static final String driver = mhcConfig.getDriver();
-    private static final String databaseName = mhcConfig.getDatabaseName();
-    private static final String username = mhcConfig.getUsername();
-    private static final String password = mhcConfig.getPassword();
+    private static String driver = mhcConfig.getDriver();
+    private static String databaseName = mhcConfig.getDatabaseName();
+    private static String username = mhcConfig.getUsername();
+    private static String password = mhcConfig.getPassword();
     private static Connection connection;
     private static databaseConnection instance = null;
 
@@ -33,6 +33,7 @@ public class databaseConnection {
 
         // Setup the database connection
         try {
+
             connection = DriverManager.getConnection(url);
             connection.setAutoCommit(true);
             DatabaseMetaData dbMeta = connection.getMetaData();
