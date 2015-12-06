@@ -20,7 +20,7 @@ public class Facilities {
     private int status; // 0 free, 1 taken
     private float pricePerHour; // The price for booking this facility per hour, should probably be 0 tho
 
-    public ArrayList getAllFacilities() {
+    public ArrayList<LinkedHashMap> getAllFacilities() {
         Map<String,String> parameters = new QuickHash();
         try {
             return dbQuery("SELECT * FROM facilities", parameters);

@@ -2,6 +2,7 @@ package guiLayer;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
 import modelLayer.Facilities;
+import sun.awt.image.ImageWatched;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -130,13 +131,13 @@ public class facilitiesBooking extends JPanel {
         facilitiesPanel.setLayout(null);
 
         Facilities facilities = new Facilities();
-        ArrayList allFacilities = facilities.getAllFacilities();
+        ArrayList<LinkedHashMap> allFacilities = facilities.getAllFacilities();
         DefaultListModel facilitiesList = new DefaultListModel<Object>();
 
-        for (Object map : allFacilities) {
-            for(LinkedHashMap element : map.entrySet()) {
+        for (LinkedHashMap map : allFacilities) {
+            for(Object element : map.entrySet()) {
                 Map.Entry pair = (Map.Entry) element;
-                System.out.println(pair.getKey());
+                System.out.println("Key: " + pair.getKey() + " | value: " + pair.getValue());
             }
         }
         /*

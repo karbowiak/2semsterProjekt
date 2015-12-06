@@ -24,7 +24,7 @@ public class databaseQuery {
     }
 
     // Returns all rows
-    public static ArrayList dbQuery(String query, Map<String, String> parameters) throws SQLException {
+    public static ArrayList<LinkedHashMap> dbQuery(String query, Map<String, String> parameters) throws SQLException {
         for (Map.Entry<String, String> element : parameters.entrySet()) {
             query = query.replace(element.getKey(), "'" + element.getValue() + "'");
         }
@@ -71,7 +71,7 @@ public class databaseQuery {
     }
 
     // Generates a collection of HashMaps with data inside to iterate over.
-    private static ArrayList getMaps(ResultSet resultSet) throws SQLException {
+    private static ArrayList<LinkedHashMap> getMaps(ResultSet resultSet) throws SQLException {
 
         // Acquire resultSet MetaData
         ResultSetMetaData metaData = resultSet.getMetaData();
