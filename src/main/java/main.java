@@ -1,17 +1,23 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.sql.SQLException;
+import java.util.Map;
+
 import guiLayer.startUpFrame;
+
+import tools.QuickHash;
+import tools.databaseQuery;
 
 public class main {
     private static JPanel startupFrame;
 
     // Start up everything
-    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, SQLException {
         // Setup the window decorator
         JFrame.setDefaultLookAndFeelDecorated(true);
         UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-
+        
         // Load the UI
         EventQueue.invokeLater(new Runnable() {
             public void run() {
