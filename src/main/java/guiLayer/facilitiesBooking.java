@@ -1,15 +1,16 @@
 package guiLayer;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
+import modelLayer.Facilities;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
+import java.util.*;
 
 public class facilitiesBooking extends JPanel {
-    private JTextField loggedInUserInformation;
-    public DatePicker fromDatePicker;
-    public DatePicker toDatePicker;
+    private final DatePicker fromDatePicker;
+    private final DatePicker toDatePicker;
 
     public facilitiesBooking(final JFrame frame) {
         setLayout(null);
@@ -35,7 +36,7 @@ public class facilitiesBooking extends JPanel {
         btnFacilitiesBooking.setBounds(140, 11, 120, 23);
         add(btnFacilitiesBooking);
 
-        loggedInUserInformation = new JTextField();
+        JTextField loggedInUserInformation = new JTextField();
         loggedInUserInformation.setBounds(332, 12, 302, 20);
         loggedInUserInformation.setEnabled(false);
         add(loggedInUserInformation);
@@ -128,17 +129,25 @@ public class facilitiesBooking extends JPanel {
         tabbedPane.addTab("Facilities", null, facilitiesPanel, null);
         facilitiesPanel.setLayout(null);
 
-        JList listGuests = new JList();
-        listGuests.setVisibleRowCount(200);
-        listGuests.setBounds(10, 11, 247, 294);
-        facilitiesPanel.add(listGuests);
+        Facilities facilities = new Facilities();
+        Collection allFacilities = facilities.getAllFacilities();
+        DefaultListModel facilitiesList = new DefaultListModel<Object>();
 
-        JTextPane textPaneGuestInformation = new JTextPane();
-        textPaneGuestInformation.setBounds(267, 29, 332, 245);
-        textPaneGuestInformation.setEnabled(false);
-        facilitiesPanel.add(textPaneGuestInformation);
+        for(Iterator<HashMap> i = allFacilities.iterator(); i.hasNext();)
+        {
+            System.out.println(i.next().get("pricePerHour"));
+        }
+        JList listFacilities = new JList();
+        listFacilities.setVisibleRowCount(200);
+        listFacilities.setBounds(10, 11, 247, 294);
+        facilitiesPanel.add(listFacilities);
 
-        JLabel labelGuestInformation = new JLabel("Guest Information");
+        JTextPane textPaneFacilitiesInformation = new JTextPane();
+        textPaneFacilitiesInformation.setBounds(267, 29, 332, 245);
+        textPaneFacilitiesInformation.setEnabled(false);
+        facilitiesPanel.add(textPaneFacilitiesInformation);
+
+        JLabel labelGuestInformation = new JLabel("Facility Information");
         labelGuestInformation.setBounds(267, 12, 160, 14);
         facilitiesPanel.add(labelGuestInformation);
 
