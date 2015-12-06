@@ -5,6 +5,8 @@ import modelLayer.Facilities;
 import sun.awt.image.ImageWatched;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
@@ -130,39 +132,40 @@ public class facilitiesBooking extends JPanel {
         tabbedPane.addTab("Facilities", null, facilitiesPanel, null);
         facilitiesPanel.setLayout(null);
 
-        Facilities facilities = new Facilities();
-        ArrayList<LinkedHashMap> allFacilities = facilities.getAllFacilities();
-        DefaultListModel facilitiesList = new DefaultListModel<Object>();
-
-        for (LinkedHashMap map : allFacilities) {
-            for(Object element : map.entrySet()) {
-                Map.Entry pair = (Map.Entry) element;
-                System.out.println("Key: " + pair.getKey() + " | value: " + pair.getValue());
-            }
-        }
-        /*
-                PreparedStatement preparedStmt = connection.prepareStatement(query);
-        preparedStmt.setQueryTimeout(15);
-        ResultSet results = preparedStmt.executeQuery();
-
-        Map<String, Object> resultMap = getMap(results);
-
-        for (Object o : resultMap.entrySet()) {
-            Map.Entry pair = (Map.Entry) o;
-            if (pair.getKey().toString().equals(Field))
-                return pair.getValue().toString();
-        }
-         */
-
-        JList listFacilities = new JList();
-        listFacilities.setVisibleRowCount(200);
-        listFacilities.setBounds(10, 11, 247, 294);
-        facilitiesPanel.add(listFacilities);
-
         JTextPane textPaneFacilitiesInformation = new JTextPane();
         textPaneFacilitiesInformation.setBounds(267, 29, 332, 245);
         textPaneFacilitiesInformation.setEnabled(false);
         facilitiesPanel.add(textPaneFacilitiesInformation);
+
+        Facilities facilities = new Facilities();
+        ArrayList<LinkedHashMap> allFacilities = facilities.getAllFacilities();
+        DefaultListModel facilitiesList = new DefaultListModel<String>();
+
+        for (LinkedHashMap map : allFacilities) {
+            for(Object element : map.entrySet()) {
+                Map.Entry pair = (Map.Entry) element;
+                if(pair.getKey().equals("facilityType"))
+                    facilitiesList.addElement(pair.getValue());
+            }
+        }
+
+        JList listFacilities = new JList(facilitiesList);
+        listFacilities.setVisibleRowCount(200);
+        listFacilities.setBounds(10, 11, 247, 294);
+        listFacilities.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int selectedID = listFacilities.getSelectedIndex();
+                LinkedHashMap facilityInfo = allFacilities.get(selectedID);
+                StringBuilder text = new StringBuilder();
+                for(Object element : facilityInfo.entrySet()) {
+                    Map.Entry pair = (Map.Entry) element;
+                    text.append(pair.getKey() + ": " + pair.getValue() + "\n");
+                }
+                textPaneFacilitiesInformation.setText(text.toString());
+            }
+        });
+        facilitiesPanel.add(listFacilities);
 
         JLabel labelGuestInformation = new JLabel("Facility Information");
         labelGuestInformation.setBounds(267, 12, 160, 14);

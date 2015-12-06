@@ -37,6 +37,15 @@ public class Facilities {
 
     }
 
+    public LinkedHashMap getAllFacilityRowsByID(int facilityID) throws SQLException {
+        Map<String, String> parameters = new QuickHash(":facilityID", String.valueOf(facilityID));
+        try {
+            return dbQueryRow("SELECT * FROM facilities WHERE facilityID = :facilityID", parameters);
+        } catch(Exception e) {
+            return null;
+        }
+    }
+
     public void getFacilityTypeByID() throws SQLException {
 
     }
