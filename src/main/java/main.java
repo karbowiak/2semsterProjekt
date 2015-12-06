@@ -17,7 +17,7 @@ public class main {
         // Setup the window decorator
         JFrame.setDefaultLookAndFeelDecorated(true);
         UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        
+
         // Load the UI
         EventQueue.invokeLater(new Runnable() {
             public void run() {
