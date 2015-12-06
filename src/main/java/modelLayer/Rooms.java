@@ -7,6 +7,7 @@ public class Rooms {
 
     private int roomID; // the room ID
     private String roomDescription; // the room description
+    private int roomType; // Type of room, 1 for 1 person room, 2 for 2 person room, 3 for 3 person room etc.
     private int status; // 0 free, 1 taken
     private float discount; // the discount applied to this room by default (if it's a haunted room for example)
     private float pricePerNight; // the price of the room pr. night
