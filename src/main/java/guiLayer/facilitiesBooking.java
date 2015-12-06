@@ -46,6 +46,11 @@ public class facilitiesBooking extends JPanel {
 
         JButton btnLogout = new JButton("Logout");
         btnLogout.setBounds(567, 32, 67, 23);
+        btnLogout.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Error: ");
+            }
+        });
         add(btnLogout);
 
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -108,6 +113,16 @@ public class facilitiesBooking extends JPanel {
             }
         });
 
+        JButton btnCreateBooking = new JButton("Create Booking");
+        btnCreateBooking.setBounds(362, 109, 115, 30);
+        btnCreateBooking.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Error: ");
+            }
+        });
+        facilitiesBookingPanel.add(btnCreateBooking);
+
+        //// Facilities
         JPanel facilitiesPanel = new JPanel();
         tabbedPane.addTab("Facilities", null, facilitiesPanel, null);
         facilitiesPanel.setLayout(null);
@@ -127,14 +142,29 @@ public class facilitiesBooking extends JPanel {
 
         JButton btnCreateGuest = new JButton("Create");
         btnCreateGuest.setBounds(277, 282, 89, 23);
+        btnCreateGuest.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Error: ");
+            }
+        });
         facilitiesPanel.add(btnCreateGuest);
 
         JButton btnEditGuest = new JButton("Edit");
         btnEditGuest.setBounds(376, 282, 89, 23);
+        btnEditGuest.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Error: ");
+            }
+        });
         facilitiesPanel.add(btnEditGuest);
 
         JButton btnDeleteGuest = new JButton("Delete");
         btnDeleteGuest.setBounds(475, 282, 89, 23);
+        btnDeleteGuest.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Error: ");
+            }
+        });
         facilitiesPanel.add(btnDeleteGuest);
     }
 }
