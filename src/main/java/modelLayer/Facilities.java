@@ -1,11 +1,11 @@
 package modelLayer;
 import tools.QuickHash;
+import tools.StringTools;
 import tools.databaseQuery;
 
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
+
 import static tools.databaseQuery.dbQuery;
 import static tools.databaseQuery.dbQueryRow;
 import static tools.databaseQuery.dbQueryField;
@@ -20,12 +20,12 @@ public class Facilities {
     private int status; // 0 free, 1 taken
     private float pricePerHour; // The price for booking this facility per hour, should probably be 0 tho
 
-    public Collection getAllFacilities() {
+    public ArrayList getAllFacilities() {
         Map<String,String> parameters = new QuickHash();
         try {
             return dbQuery("SELECT * FROM facilities", parameters);
         } catch (SQLException e) {
-            return Collections.emptyList();
+            return null;
         }
     }
 

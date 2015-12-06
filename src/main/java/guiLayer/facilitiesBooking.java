@@ -130,13 +130,29 @@ public class facilitiesBooking extends JPanel {
         facilitiesPanel.setLayout(null);
 
         Facilities facilities = new Facilities();
-        Collection allFacilities = facilities.getAllFacilities();
+        ArrayList allFacilities = facilities.getAllFacilities();
         DefaultListModel facilitiesList = new DefaultListModel<Object>();
 
-        for(Iterator<HashMap> i = allFacilities.iterator(); i.hasNext();)
-        {
-            System.out.println(i.next().get("pricePerHour"));
+        for (LinkedHashMap map : allFacilities) {
+            for(Object element : map.entrySet()) {
+                Map.Entry pair = (Map.Entry) element;
+                System.out.println(pair.getKey());
+            }
         }
+        /*
+                PreparedStatement preparedStmt = connection.prepareStatement(query);
+        preparedStmt.setQueryTimeout(15);
+        ResultSet results = preparedStmt.executeQuery();
+
+        Map<String, Object> resultMap = getMap(results);
+
+        for (Object o : resultMap.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
+            if (pair.getKey().toString().equals(Field))
+                return pair.getValue().toString();
+        }
+         */
+
         JList listFacilities = new JList();
         listFacilities.setVisibleRowCount(200);
         listFacilities.setBounds(10, 11, 247, 294);

@@ -24,7 +24,7 @@ public class databaseQuery {
     }
 
     // Returns all rows
-    public static Collection dbQuery(String query, Map<String, String> parameters) throws SQLException {
+    public static ArrayList dbQuery(String query, Map<String, String> parameters) throws SQLException {
         for (Map.Entry<String, String> element : parameters.entrySet()) {
             query = query.replace(element.getKey(), "'" + element.getValue() + "'");
         }
@@ -37,7 +37,7 @@ public class databaseQuery {
     }
 
     // Returns one row
-    public static Map<String, Object> dbQueryRow(String query, Map<String, String> parameters) throws SQLException {
+    public static LinkedHashMap<String, Object> dbQueryRow(String query, Map<String, String> parameters) throws SQLException {
         for (Map.Entry<String, String> element : parameters.entrySet()) {
             query = query.replace(element.getKey(), "'" + element.getValue() + "'");
         }
@@ -71,7 +71,7 @@ public class databaseQuery {
     }
 
     // Generates a collection of HashMaps with data inside to iterate over.
-    private static Collection getMaps(ResultSet resultSet) throws SQLException {
+    private static ArrayList getMaps(ResultSet resultSet) throws SQLException {
 
         // Acquire resultSet MetaData
         ResultSetMetaData metaData = resultSet.getMetaData();
@@ -82,7 +82,7 @@ public class databaseQuery {
 
         // Scroll to each record, make map of row, add to list
         while (resultSet.next()) {
-            HashMap row = new HashMap(cols,1);
+            LinkedHashMap row = new LinkedHashMap(cols, 1);
             for (int i=1; i<=cols ; i++) {
                 //noinspection unchecked
                 row.put(metaData.getColumnName(i),
@@ -97,13 +97,13 @@ public class databaseQuery {
     }
 
     // Generates a Map with data..
-    private static Map<String, Object> getMap(ResultSet resultSet) throws SQLException {
+    private static LinkedHashMap<String, Object> getMap(ResultSet resultSet) throws SQLException {
         // Acquire resultSet MetaData
         ResultSetMetaData metaData = resultSet.getMetaData();
         int cols = metaData.getColumnCount();
 
         // Create hashmap, sized to number of columns
-        HashMap<String, Object> row = new HashMap<String, Object>(cols, 1);
+        LinkedHashMap row = new LinkedHashMap<String, Object>(cols, 1);
 
         // Transfer record into hashmap
         if (resultSet.next()) {
