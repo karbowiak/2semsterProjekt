@@ -61,10 +61,9 @@ public class databaseQuery {
 
         Map<String, Object> resultMap = getMap(results);
 
-        Iterator it = resultMap.entrySet().iterator();
-        while(it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            if(pair.getKey().toString().equals(Field))
+        for (Object o : resultMap.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
+            if (pair.getKey().toString().equals(Field))
                 return pair.getValue().toString();
         }
 
@@ -72,7 +71,7 @@ public class databaseQuery {
     }
 
     // Generates a collection of HashMaps with data inside to iterate over.
-    public static Collection getMaps(ResultSet resultSet) throws SQLException {
+    private static Collection getMaps(ResultSet resultSet) throws SQLException {
 
         // Acquire resultSet MetaData
         ResultSetMetaData metaData = resultSet.getMetaData();
@@ -85,9 +84,11 @@ public class databaseQuery {
         while (resultSet.next()) {
             HashMap row = new HashMap(cols,1);
             for (int i=1; i<=cols ; i++) {
+                //noinspection unchecked
                 row.put(metaData.getColumnName(i),
                         resultSet.getString(i));
             }
+            //noinspection unchecked
             list.add(row);
         } // end while
 
@@ -96,7 +97,7 @@ public class databaseQuery {
     }
 
     // Generates a Map with data..
-    public static Map<String, Object> getMap(ResultSet resultSet) throws SQLException {
+    private static Map<String, Object> getMap(ResultSet resultSet) throws SQLException {
         // Acquire resultSet MetaData
         ResultSetMetaData metaData = resultSet.getMetaData();
         int cols = metaData.getColumnCount();
