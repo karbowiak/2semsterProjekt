@@ -37,6 +37,7 @@ public class facilitiesBooking extends JPanel {
 
         loggedInUserInformation = new JTextField();
         loggedInUserInformation.setBounds(332, 12, 302, 20);
+        loggedInUserInformation.setEnabled(false);
         add(loggedInUserInformation);
         loggedInUserInformation.setColumns(10);
 
@@ -134,6 +135,7 @@ public class facilitiesBooking extends JPanel {
 
         JTextPane textPaneGuestInformation = new JTextPane();
         textPaneGuestInformation.setBounds(267, 29, 332, 245);
+        textPaneGuestInformation.setEnabled(false);
         facilitiesPanel.add(textPaneGuestInformation);
 
         JLabel labelGuestInformation = new JLabel("Guest Information");

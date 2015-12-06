@@ -15,6 +15,7 @@ public class startUpFrame extends JPanel {
 
         employeeName = new JTextField();
         employeeName.setBounds(428, 11, 193, 20);
+        employeeName.setEnabled(false);
         add(employeeName);
         employeeName.setColumns(10);
 
@@ -29,6 +30,7 @@ public class startUpFrame extends JPanel {
         employeeID = new JTextField();
         employeeID.setColumns(10);
         employeeID.setBounds(428, 42, 193, 20);
+        employeeID.setEnabled(false);
         add(employeeID);
 
         JButton btnLogout = new JButton("Logout");

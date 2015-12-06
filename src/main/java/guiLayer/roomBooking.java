@@ -39,6 +39,7 @@ public class roomBooking extends JPanel {
 
         loggedInUserInformation = new JTextField();
         loggedInUserInformation.setBounds(332, 12, 302, 20);
+        loggedInUserInformation.setEnabled(false);
         add(loggedInUserInformation);
         loggedInUserInformation.setColumns(10);
 
@@ -142,6 +143,7 @@ public class roomBooking extends JPanel {
 
         JTextPane textPaneRentalInformation = new JTextPane();
         textPaneRentalInformation.setBounds(267, 29, 332, 245);
+        textPaneRentalInformation.setEnabled(false);
         rentals.add(textPaneRentalInformation);
 
         JLabel labelRentalInformation = new JLabel("Rental Information");
@@ -192,6 +194,7 @@ public class roomBooking extends JPanel {
 
         JTextPane textPaneGuestInformation = new JTextPane();
         textPaneGuestInformation.setBounds(267, 29, 332, 245);
+        textPaneGuestInformation.setEnabled(false);
         guestsPanel.add(textPaneGuestInformation);
 
         JLabel labelGuestInformation = new JLabel("Guest Information");
@@ -242,6 +245,7 @@ public class roomBooking extends JPanel {
 
         JTextPane textPaneRoomInformation = new JTextPane();
         textPaneRoomInformation.setBounds(267, 29, 332, 245);
+        textPaneRoomInformation.setEnabled(false);
         roomsPanel.add(textPaneRoomInformation);
 
         JLabel labelRoomInformation = new JLabel("Room Information");
