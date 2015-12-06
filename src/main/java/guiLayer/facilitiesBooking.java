@@ -133,8 +133,8 @@ public class facilitiesBooking extends JPanel {
         ArrayList allFacilities = facilities.getAllFacilities();
         DefaultListModel facilitiesList = new DefaultListModel<Object>();
 
-        for (LinkedHashMap map : allFacilities) {
-            for(Object element : map.entrySet()) {
+        for (Object map : allFacilities) {
+            for(LinkedHashMap element : map.entrySet()) {
                 Map.Entry pair = (Map.Entry) element;
                 System.out.println(pair.getKey());
             }
