@@ -1,23 +1,23 @@
 package controlLayer.GUI;
 
 import modelLayer.Facilities;
-import sun.awt.image.ImageWatched;
+import modelLayer.Rooms;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 // Return all facilities as a DefaultListModel
-public class facilitiesController {
-    // Load the Facilities Model
-    Facilities facilities = new Facilities();
+public class roomsController {
+    // Load the Rooms model
+    Rooms rooms = new Rooms();
 
+    //public DefaultListModel getAllRoomsListModel() {
+        //ArrayList<LinkedHashMap> allRooms =
+    //}
     // Return a DefaultListModel for JList
-    public DefaultListModel getAllFacilitiesListModel() {
+    /*public DefaultListModel getAllFacilitiesListModel() {
         ArrayList<LinkedHashMap> allFacilities = facilities.getAllFacilities();
         DefaultListModel facilitiesList = new DefaultListModel<String>();
 
@@ -36,7 +36,7 @@ public class facilitiesController {
     public ArrayList<LinkedHashMap> getAllFacilitiesHashMap() {
         ArrayList<LinkedHashMap> allFacilities = facilities.getAllFacilities();
         return allFacilities;
-    }
+    }*/
 
 
 }
