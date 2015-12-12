@@ -1,6 +1,7 @@
 package guiLayer;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
+import controlLayer.GUI.facilitiesController;
 import modelLayer.Facilities;
 import sun.awt.image.ImageWatched;
 
@@ -14,6 +15,7 @@ import java.util.*;
 public class facilitiesBooking extends JPanel {
     private final DatePicker fromDatePicker;
     private final DatePicker toDatePicker;
+    private controlLayer.GUI.facilitiesController facilitiesController = new facilitiesController();
 
     public facilitiesBooking(final JFrame frame) {
         setLayout(null);
@@ -137,19 +139,9 @@ public class facilitiesBooking extends JPanel {
         textPaneFacilitiesInformation.setEnabled(false);
         facilitiesPanel.add(textPaneFacilitiesInformation);
 
-        Facilities facilities = new Facilities();
-        ArrayList<LinkedHashMap> allFacilities = facilities.getAllFacilities();
-        DefaultListModel facilitiesList = new DefaultListModel<String>();
-
-        for (LinkedHashMap map : allFacilities) {
-            for(Object element : map.entrySet()) {
-                Map.Entry pair = (Map.Entry) element;
-                if(pair.getKey().equals("facilityType"))
-                    facilitiesList.addElement(pair.getValue());
-            }
-        }
-
-        JList listFacilities = new JList(facilitiesList);
+        // Show all facilities on the hotel in a list, and also populate the text for the textPane
+        JList listFacilities = new JList(facilitiesController.getAllFacilitiesListModel());
+        ArrayList<LinkedHashMap> allFacilities = facilitiesController.getAllFacilitiesHashMap();
         listFacilities.setVisibleRowCount(200);
         listFacilities.setBounds(10, 11, 247, 294);
         listFacilities.addListSelectionListener(new ListSelectionListener() {
