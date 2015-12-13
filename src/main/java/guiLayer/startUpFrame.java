@@ -1,5 +1,6 @@
 package guiLayer;
 
+import controlLayer.GUI.startupController;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -8,6 +9,7 @@ import java.sql.SQLException;
 public class startUpFrame extends JPanel {
     private static JTextField employeeName;
     private static JTextField employeeID;
+    private controlLayer.GUI.startupController startupController = new startupController();
 
     public startUpFrame(final JFrame frame) throws SQLException {
         setLayout(null);
@@ -15,6 +17,7 @@ public class startUpFrame extends JPanel {
         setVisible(true);
 
         employeeName = new JTextField();
+        employeeName.setText(startupController.getLoggedInUserName());
         employeeName.setBounds(428, 11, 193, 20);
         employeeName.setEnabled(false);
         add(employeeName);
@@ -29,6 +32,7 @@ public class startUpFrame extends JPanel {
         add(lblEmployeeGuest);
 
         employeeID = new JTextField();
+        employeeID.setText(startupController.getLoggedInUserID());
         employeeID.setColumns(10);
         employeeID.setBounds(428, 42, 193, 20);
         employeeID.setEnabled(false);

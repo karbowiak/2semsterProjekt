@@ -2,6 +2,7 @@ package guiLayer;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
 import controlLayer.GUI.facilitiesController;
+import controlLayer.GUI.startupController;
 import modelLayer.Facilities;
 import sun.awt.image.ImageWatched;
 
@@ -17,6 +18,7 @@ public class facilitiesBooking extends JPanel {
     private final DatePicker fromDatePicker;
     private final DatePicker toDatePicker;
     private controlLayer.GUI.facilitiesController facilitiesController = new facilitiesController();
+    private controlLayer.GUI.startupController startupController = new startupController();
 
     public facilitiesBooking(final JFrame frame) {
         setLayout(null);
@@ -43,6 +45,7 @@ public class facilitiesBooking extends JPanel {
         add(btnFacilitiesBooking);
 
         JTextField loggedInUserInformation = new JTextField();
+        loggedInUserInformation.setText(startupController.getLoggedInUserName() + " / " + startupController.getLoggedInUserID());
         loggedInUserInformation.setBounds(332, 12, 302, 20);
         loggedInUserInformation.setEnabled(false);
         add(loggedInUserInformation);

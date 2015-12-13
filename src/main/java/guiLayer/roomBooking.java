@@ -1,6 +1,8 @@
 package guiLayer;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
+import controlLayer.GUI.startupController;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -10,8 +12,9 @@ import java.util.Date;
 
 public class roomBooking extends JPanel {
     private JTextField loggedInUserInformation;
-    public DatePicker fromDatePicker;
-    public DatePicker toDatePicker;
+    private DatePicker fromDatePicker;
+    private DatePicker toDatePicker;
+    private controlLayer.GUI.startupController startupController = new startupController();
 
     public roomBooking(final JFrame frame) {
         setLayout(null);
@@ -38,6 +41,7 @@ public class roomBooking extends JPanel {
         add(btnFacilitiesBooking);
 
         loggedInUserInformation = new JTextField();
+        loggedInUserInformation.setText(startupController.getLoggedInUserName() + " / " + startupController.getLoggedInUserID());
         loggedInUserInformation.setBounds(332, 12, 302, 20);
         loggedInUserInformation.setEnabled(false);
         add(loggedInUserInformation);
