@@ -29,6 +29,15 @@ public class Person {
     // Stuff that can be used later.. not that it has to..
     private QuickHash personTypeSpecification = new QuickHash("1", String.valueOf("Guest"), "2", String.valueOf("Employee"), "3", String.valueOf("Boss"));
 
+    public ArrayList<LinkedHashMap> getAllPersons() {
+        Map<String, String> parameters = new QuickHash();
+        try {
+            return dbQuery("SELECT * FROM persons", parameters);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
     public LinkedHashMap getPerson(int personID) {
         Map<String, String> parameters = new QuickHash(":personID", String.valueOf(personID));
         try {
@@ -51,7 +60,11 @@ public class Person {
         }
         else {
             try {
-                id = Integer.parseInt(dbQueryField("SELECT personID FROM persons WHERE personFirstName = :personFirsTName AND personLastName = :personLastName AND personPassportInformation = :personPassportInformation", "personID", parameters));
+                String queryData = dbQueryField("SELECT personID FROM persons WHERE personFirstName = :personFirsTName AND personLastName = :personLastName AND personPassportInformation = :personPassportInformation", "personID", parameters);
+                if(!Objects.equals(queryData, ""))
+                    id = Integer.parseInt(queryData);
+                else
+                    id = 0;
             } catch (SQLException e) {
                 id = 0;
             }

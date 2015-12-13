@@ -75,7 +75,11 @@ public class roomBookings {
         }
         else {
             try {
-                id = Integer.parseInt(dbQueryField("SELECT bookingID FROM roomBookings WHERE roomID = :roomID AND fromDate = :fromDate AND toDate = :toDate AND bookingActive = 1", "bookingID", parameters));
+                String queryData = dbQueryField("SELECT bookingID FROM roomBookings WHERE roomID = :roomID AND fromDate = :fromDate AND toDate = :toDate AND bookingActive = 1", "bookingID", parameters);
+                if(!Objects.equals(queryData, ""))
+                    id = Integer.parseInt(queryData);
+                else
+                    id = 0;
             } catch (SQLException e) {
                 id = 0;
             }
