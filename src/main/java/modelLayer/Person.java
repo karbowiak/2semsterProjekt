@@ -53,7 +53,7 @@ public class Person {
 
     public int insertUpdatePerson(int personID, String personFirstName, String personLastName, String personAddress, String personPassportInformation, String personPhoneNumber, String personEMail, String personBirthDate, String personFromCountry, int personType, String personFunction) {
         int id;
-        Map<String, String> parameters = new QuickHash("personFirstName", String.valueOf(personFirstName), "personLastName", String.valueOf(personLastName), "personAddress", String.valueOf(personAddress), "personPassportInformation", String.valueOf(personPassportInformation), "personPhoneNumber", String.valueOf(personPhoneNumber), "personEMail", String.valueOf(personEMail), "personBirthDate", String.valueOf(personBirthDate), "personFromCountry", String.valueOf(personFromCountry), "personType", String.valueOf(personType), "personFunction", String.valueOf(personFunction));
+        Map<String, String> parameters = new QuickHash(":personFirstName", String.valueOf(personFirstName), ":personLastName", String.valueOf(personLastName), ":personAddress", String.valueOf(personAddress), ":personPassportInformation", String.valueOf(personPassportInformation), ":personPhoneNumber", String.valueOf(personPhoneNumber), ":personEMail", String.valueOf(personEMail), ":personBirthDate", String.valueOf(personBirthDate), ":personFromCountry", String.valueOf(personFromCountry), ":personType", String.valueOf(personType), ":personFunction", String.valueOf(personFunction));
 
         if(personID > 0) {
             id = personID;
@@ -71,7 +71,7 @@ public class Person {
         }
 
         if(id > 0) {
-            Map<String, String> updateParameters = new QuickHash("personID", String.valueOf(id), "personFirstName", String.valueOf(personFirstName), "personLastName", String.valueOf(personLastName), "personAddress", String.valueOf(personAddress), "personPassportInformation", String.valueOf(personPassportInformation), "personPhoneNumber", String.valueOf(personPhoneNumber), "personEMail", String.valueOf(personEMail), "personBirthDate", String.valueOf(personBirthDate), "personFromCountry", String.valueOf(personFromCountry), "personType", String.valueOf(personType), "personFunction", String.valueOf(personFunction));
+            Map<String, String> updateParameters = new QuickHash(":personID", String.valueOf(id), ":personFirstName", String.valueOf(personFirstName), ":personLastName", String.valueOf(personLastName), ":personAddress", String.valueOf(personAddress), ":personPassportInformation", String.valueOf(personPassportInformation), ":personPhoneNumber", String.valueOf(personPhoneNumber), ":personEMail", String.valueOf(personEMail), ":personBirthDate", String.valueOf(personBirthDate), ":personFromCountry", String.valueOf(personFromCountry), ":personType", String.valueOf(personType), ":personFunction", String.valueOf(personFunction));
             try {
                 if(!Objects.equals(personFirstName, ""))
                     dbExecute("UPDATE persons SET personFirstName = :personFirstName WHERE personID = :personID", updateParameters);
