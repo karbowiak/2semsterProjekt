@@ -71,6 +71,12 @@ public class Rooms {
         }
     }
 
+    // fucking overload it, i want default variables, damnit i'm getting them !
+    // Also seriously java, no default variables in functions? stop being such a shitty language, plz..
+    public int insertUpdateRoom() {
+        return insertUpdateRoom("", 0, 0, 0, 0);
+    }
+
     public int insertUpdateRoom(String roomDescription, int roomSize, int roomStatus, float roomDiscount, float roomPricePerNight) {
         // check if it exists, if it doesn't update it.. also fuck microsoft sql server so hard.
         // MySQL: INSERT INTO table () VALUES () ON DUPLICATE KEY UPDATE key = value ....
@@ -92,7 +98,17 @@ public class Rooms {
         if(id > 0) {
             Map<String, String> updateParameters = new QuickHash(":roomID", String.valueOf(id), ":roomDescription", String.valueOf(roomDescription), ":roomSize", String.valueOf(roomSize), ":roomStatus", String.valueOf(roomStatus), ":roomDiscount", String.valueOf(roomDiscount), ":roomPricePerNight", String.valueOf(roomPricePerNight));
             try {
-                dbExecute("UPDATE rooms SET roomDescription = :roomDescription, roomSize = :roomSize, roomStatus = :roomStatus, roomDiscount = :roomDiscount, roomPricePerNight = :roomPricePerNight WHERE roomID = :roomID", updateParameters);
+                // Update the fields that are set!
+                if(roomDescription != "")
+                    dbExecute("UPDATE rooms SET roomDescription = :roomDescription WHERE roomID = :roomID", updateParameters);
+                if(roomSize > 0)
+                    dbExecute("UPDATE rooms SET roomSize = :roomSize WHERE roomID = :roomID", updateParameters);
+                if(roomStatus > 0)
+                    dbExecute("UPDATE rooms SET roomStatus = :roomStatus WHERE roomID = :roomID", updateParameters);
+                if(roomDiscount > 0)
+                    dbExecute("UPDATE rooms SET roomDiscount = :roomDiscount WHERE roomID = :roomID", updateParameters);
+                if(roomPricePerNight > 0)
+                    dbExecute("UPDATE rooms SET roomPricePerNight = :roomPricePerNight WHERE roomID = :roomID", updateParameters);
             } catch (SQLException e) {
                 return 0;
             }
