@@ -72,11 +72,12 @@ public class Rooms {
     }
 
     public int insertUpdateRoom(String roomDescription, int roomSize, int roomStatus, float roomDiscount, float roomPricePerNight) {
-        // check if it exists, if it doesn't update it.. also fuck microsoft sql server so hard..
+        // check if it exists, if it doesn't update it.. also fuck microsoft sql server so hard.
         // MySQL: INSERT INTO table () VALUES () ON DUPLICATE KEY UPDATE key = value ....
         // MSSQL: http://i.imgur.com/zT1VT4L.png <- that.. tha... wow..
-        // Also: http://i.imgur.com/NiyJuVg.png - seriously, upgrade your shitty mssql server you useless pieces of shit
-        // Fucking mickey mouse education...
+        // Also: http://i.imgur.com/NiyJuVg.png - seriously, upgrade your shitty mssql server you useless assholes.
+        // Fucking mickey mouse education.
+        // Ps. MSSQL is the ISIS of the database server world.
 
         int id;
         // Get ID
@@ -86,7 +87,7 @@ public class Rooms {
         } catch (SQLException e) {
             id = 0;
         }
-        
+
         // If id is larger than 0 then we update, else we insert
         if(id > 0) {
             Map<String, String> updateParameters = new QuickHash(":roomID", String.valueOf(id), ":roomDescription", String.valueOf(roomDescription), ":roomSize", String.valueOf(roomSize), ":roomStatus", String.valueOf(roomStatus), ":roomDiscount", String.valueOf(roomDiscount), ":roomPricePerNight", String.valueOf(roomPricePerNight));
