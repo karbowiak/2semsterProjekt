@@ -25,6 +25,7 @@ public class roomBooking extends JPanel {
     // Rooms list data
     private DefaultListModel roomsListModel = roomsController.getAllRoomsListModel();
     private ArrayList<LinkedHashMap> roomsAll = roomsController.getAllRoomsHashMap();
+    private int roomSelectedID;
 
     public roomBooking(final JFrame frame) {
         setLayout(null);
@@ -257,8 +258,8 @@ public class roomBooking extends JPanel {
         listRooms.setBounds(10, 11, 247, 294);
         listRooms.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
-                int selectedID = listRooms.getSelectedIndex();
-                LinkedHashMap roomInfo = roomsAll.get(selectedID);
+                roomSelectedID = listRooms.getSelectedIndex();
+                LinkedHashMap roomInfo = roomsAll.get(roomSelectedID);
                 StringBuilder text = new StringBuilder();
                 for (Object element : roomInfo.entrySet()) {
                     Map.Entry pair = (Map.Entry) element;
@@ -297,8 +298,7 @@ public class roomBooking extends JPanel {
                     roomsController.createRoom(roomDescription.getText(), Integer.valueOf(roomSize.getText()), Float.parseFloat(roomDiscount.getText()), Float.parseFloat(roomPricePerNight.getText()));
                     roomsListModel = roomsController.getAllRoomsListModel();
                     roomsAll = roomsController.getAllRoomsHashMap();
-                    listRooms.setVisible(false);
-                    listRooms.setVisible(true);
+                    listRooms.setModel(roomsListModel);
                 }
             }
         });
@@ -307,8 +307,60 @@ public class roomBooking extends JPanel {
         JButton btnEditRoom = new JButton("Edit");
         btnEditRoom.setBounds(376, 282, 89, 23);
         btnEditRoom.addActionListener(new ActionListener() {
+            JTextField roomID;
+            JTextField roomDescription;
+            JTextField roomSize;
+            JTextField roomStatus;
+            JTextField roomDiscount;
+            JTextField roomPricePerNight;
+
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Error: ");
+                LinkedHashMap roomInfo = roomsAll.get(roomSelectedID);
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                for (Object element : roomInfo.entrySet()) {
+                    Map.Entry pair = (Map.Entry) element;
+                    // See, now it would be nice with fucking dynamic variable creation, but can java do this?
+                    // nooooooooooo.. because java is a shit language, only used by shit people...............
+                    if(pair.getKey().equals("roomID")) {
+                        roomID = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(roomID);
+                    }
+                    if(pair.getKey().equals("roomDescription")) {
+                        roomDescription = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(roomDescription);
+                    }
+                    if(pair.getKey().equals("roomSize")) {
+                        roomSize = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(roomSize);
+                    }
+                    if(pair.getKey().equals("roomStatus")) {
+                        roomStatus = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(roomStatus);
+                    }
+                    if(pair.getKey().equals("roomDiscount")) {
+                        roomDiscount = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(roomDiscount);
+                    }
+                    if(pair.getKey().equals("roomPricePerNight")) {
+                        roomPricePerNight = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(roomPricePerNight);
+                    }
+                }
+                int result = JOptionPane.showConfirmDialog(null, panel, "Update Room", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if(result == JOptionPane.OK_OPTION) {
+                    // Insert it to the database
+                    roomsController.updateRoom(Integer.valueOf(roomID.getText()), roomDescription.getText(), Integer.valueOf(roomSize.getText()), Integer.valueOf(roomStatus.getText()), Float.parseFloat(roomDiscount.getText()), Float.parseFloat(roomPricePerNight.getText()));
+                    roomsListModel = roomsController.getAllRoomsListModel();
+                    roomsAll = roomsController.getAllRoomsHashMap();
+                    listRooms.setModel(roomsListModel);
+                }
             }
         });
         roomsPanel.add(btnEditRoom);

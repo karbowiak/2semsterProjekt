@@ -45,4 +45,8 @@ public class roomsController {
     public void createRoom(String roomDescription, int roomSize, float roomDiscount, float roomPricePerNight) {
         rooms.insertUpdateRoom(0, roomDescription, roomSize, 0, roomDiscount, roomPricePerNight);
     }
+
+    public void updateRoom(int roomID, String roomDescription, int roomSize, int roomStatus, float roomDiscount, float roomPricePerNight) {
+        rooms.insertUpdateRoom(roomID, roomDescription, roomSize, roomStatus, roomDiscount, roomPricePerNight);
+    }
 }
