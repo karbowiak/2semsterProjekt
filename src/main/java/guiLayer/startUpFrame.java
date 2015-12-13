@@ -27,6 +27,7 @@ public class startUpFrame extends JPanel {
         lblNewLabel.setBounds(330, 14, 88, 14);
         add(lblNewLabel);
 
+        // Show the employee / guest ID - should really be loaded from the database, but it's hardcoded for now..
         JLabel lblEmployeeGuest = new JLabel("Employee / Guest ID:");
         lblEmployeeGuest.setBounds(316, 45, 102, 14);
         add(lblEmployeeGuest);
