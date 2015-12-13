@@ -22,26 +22,35 @@ public class roomBookings {
     private int employeeID; // the personID of the person who setup this booking
     private int bookingActive;
 
+    // Default to 1 for the booking Active
     public ArrayList<LinkedHashMap> getAllBookings() {
-        // only get them where bookingActive is 1
-        Map<String, String> parameters = new QuickHash();
+        return getAllBookings(1);
+    }
+
+    public ArrayList<LinkedHashMap> getAllBookings(int bookingActive) {
+        Map<String, String> parameters = new QuickHash(":bookingActive", String.valueOf(bookingActive));
         try {
-            return dbQuery("SELECT * FROM roomBookings", parameters);
+            return dbQuery("SELECT * FROM roomBookings WHERE bookingActive = :bookingActive", parameters);
         } catch (SQLException e) {
             return null;
         }
     }
 
+    // Default to 1 for the booking Active
     public LinkedHashMap getBookingByID(int bookingID) {
-        // only get them where bookingActive is 1
-        Map<String, String> parameters = new QuickHash(":bookingID", String.valueOf(bookingID));
+        return getBookingByID(bookingID, 1);
+    }
+
+    public LinkedHashMap getBookingByID(int bookingID, int bookingActive) {
+        Map<String, String> parameters = new QuickHash(":bookingID", String.valueOf(bookingID), ":bookingActive", String.valueOf(bookingActive));
         try {
-            return dbQueryRow("SELECT * FROM roomBookings WHERE bookingID = :bookingID", parameters);
+            return dbQueryRow("SELECT * FROM roomBookings WHERE bookingID = :bookingID AND bookingActive = :bookingActive", parameters);
         } catch (SQLException e) {
             return null;
         }
     }
 
+    // Default to 1 for the booking Active
     public int insertUpdateBooking() {
         return insertUpdateBooking(0, 0, 0, "", "", "", "", 0, 0, 0, 0, 1);
     }
@@ -66,7 +75,7 @@ public class roomBookings {
         }
         else {
             try {
-                id = Integer.parseInt(dbQueryField("SELECT bookingID FROM roomBookings WHERE roomID = :roomID AND fromDate = :fromDate AND toDate = :toDate", "bookingID", parameters));
+                id = Integer.parseInt(dbQueryField("SELECT bookingID FROM roomBookings WHERE roomID = :roomID AND fromDate = :fromDate AND toDate = :toDate AND bookingActive = 1", "bookingID", parameters));
             } catch (SQLException e) {
                 id = 0;
             }
