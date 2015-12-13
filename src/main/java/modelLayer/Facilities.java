@@ -29,14 +29,6 @@ public class Facilities {
         }
     }
 
-    public void getAllFacilitiesByFacilityType() throws SQLException {
-
-    }
-
-    public void getAllFacilitiesByStatus() throws SQLException {
-
-    }
-
     public LinkedHashMap getAllFacilityRowsByID(int facilityID) throws SQLException {
         Map<String, String> parameters = new QuickHash(":facilityID", String.valueOf(facilityID));
         try {
@@ -46,39 +38,4 @@ public class Facilities {
         }
     }
 
-    public void getFacilityTypeByID() throws SQLException {
-
-    }
-
-    public void getFacilityDescriptionByID() throws SQLException {
-
-    }
-
-    public void getFacilityStatusByID() throws SQLException {
-
-    }
-
-    public void getFacilityPricePerHourByID() throws SQLException {
-
-    }
-
-    public boolean setFacilityTypeByID() throws SQLException {
-        return false;
-    }
-
-    public boolean setFacilityDescriptionByID() throws SQLException {
-        return false;
-    }
-
-    public boolean setFacilityStatusByID() throws SQLException {
-        return false;
-    }
-
-    public boolean setFacilityPricePerHourByID() throws SQLException {
-        return false;
-    }
-
-    public boolean insertFacility(String facilityType, String facilityDescription, int status, float pricePerHour) throws SQLException {
-        return false;
-    }
 }

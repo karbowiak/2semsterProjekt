@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 // Static import the dbQuery tools
 import static tools.databaseQuery.dbQuery;
@@ -74,10 +75,10 @@ public class Rooms {
     // fucking overload it, i want default variables, damnit i'm getting them !
     // Also seriously java, no default variables in functions? stop being such a shitty language, plz..
     public int insertUpdateRoom() {
-        return insertUpdateRoom("", 0, 0, 0, 0);
+        return insertUpdateRoom(0, "", 0, 0, 0, 0);
     }
 
-    public int insertUpdateRoom(String roomDescription, int roomSize, int roomStatus, float roomDiscount, float roomPricePerNight) {
+    public int insertUpdateRoom(int roomID, String roomDescription, int roomSize, int roomStatus, float roomDiscount, float roomPricePerNight) {
         // check if it exists, if it doesn't update it.. also fuck microsoft sql server so hard.
         // MySQL: INSERT INTO table () VALUES () ON DUPLICATE KEY UPDATE key = value ....
         // MSSQL: http://i.imgur.com/zT1VT4L.png <- that.. tha... wow..
@@ -88,18 +89,23 @@ public class Rooms {
         int id;
         // Get ID
         Map<String, String> parameters = new QuickHash(":roomDescription", String.valueOf(roomDescription), ":roomSize", String.valueOf(roomSize), ":roomStatus", String.valueOf(roomStatus), ":roomDiscount", String.valueOf(roomDiscount), ":roomPricePerNight", String.valueOf(roomPricePerNight));
-        try {
-            id = Integer.parseInt(dbQueryField("SELECT roomID FROM rooms WHERE roomDescription = :roomDescription AND roomSize = :roomSize AND roomStatus = :roomStatus AND roomDiscount = :roomDiscount AND roomPricePerNight = :roomPricePerNight", "roomID", parameters));
-        } catch (SQLException e) {
-            id = 0;
-        }
 
+        if(roomID > 0) {
+            id = roomID;
+        }
+        else {
+            try {
+                id = Integer.parseInt(dbQueryField("SELECT roomID FROM rooms WHERE roomDescription = :roomDescription AND roomSize = :roomSize AND roomStatus = :roomStatus AND roomDiscount = :roomDiscount AND roomPricePerNight = :roomPricePerNight", "roomID", parameters));
+            } catch (SQLException e) {
+                id = 0;
+            }
+        }
         // If id is larger than 0 then we update, else we insert
         if(id > 0) {
             Map<String, String> updateParameters = new QuickHash(":roomID", String.valueOf(id), ":roomDescription", String.valueOf(roomDescription), ":roomSize", String.valueOf(roomSize), ":roomStatus", String.valueOf(roomStatus), ":roomDiscount", String.valueOf(roomDiscount), ":roomPricePerNight", String.valueOf(roomPricePerNight));
             try {
                 // Update the fields that are set!
-                if(roomDescription != "")
+                if(!Objects.equals(roomDescription, ""))
                     dbExecute("UPDATE rooms SET roomDescription = :roomDescription WHERE roomID = :roomID", updateParameters);
                 if(roomSize > 0)
                     dbExecute("UPDATE rooms SET roomSize = :roomSize WHERE roomID = :roomID", updateParameters);
@@ -124,6 +130,16 @@ public class Rooms {
 
         // It was inserted / updated.. lets assume so
         return id;
+    }
+
+    public boolean deleteRoom(int roomID) {
+        Map<String, String> parameters = new QuickHash(":roomID", String.valueOf(roomID));
+        try {
+            dbExecute("DELETE FROM rooms WHERE roomID = :roomID", parameters);
+        } catch (SQLException e) {
+            return false;
+        }
+        return true;
     }
 
     //databaseQuery dbQ = new databaseQuery();
