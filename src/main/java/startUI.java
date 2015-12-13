@@ -10,15 +10,7 @@ public class startUI extends Thread {
     public void run() {
         try {
             startUI();
-        } catch (ClassNotFoundException e) {
-            System.out.println("An error occured, oh shit.");
-        } catch (UnsupportedLookAndFeelException e) {
-            System.out.println("An error occured, oh shit.");
-        } catch (InstantiationException e) {
-            System.out.println("An error occured, oh shit.");
-        } catch (IllegalAccessException e) {
-            System.out.println("An error occured, oh shit.");
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException | SQLException e) {
             System.out.println("An error occured, oh shit.");
         }
     }
