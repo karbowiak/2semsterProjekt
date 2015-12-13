@@ -1,12 +1,7 @@
 package controlLayer.GUI;
 
 import modelLayer.Facilities;
-import sun.awt.image.ImageWatched;
-
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;

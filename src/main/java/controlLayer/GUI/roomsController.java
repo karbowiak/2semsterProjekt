@@ -1,8 +1,6 @@
 package controlLayer.GUI;
 
-import modelLayer.Facilities;
 import modelLayer.Rooms;
-
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -13,30 +11,38 @@ public class roomsController {
     // Load the Rooms model
     Rooms rooms = new Rooms();
 
-    //public DefaultListModel getAllRoomsListModel() {
-        //ArrayList<LinkedHashMap> allRooms =
-    //}
-    // Return a DefaultListModel for JList
-    /*public DefaultListModel getAllFacilitiesListModel() {
-        ArrayList<LinkedHashMap> allFacilities = facilities.getAllFacilities();
-        DefaultListModel facilitiesList = new DefaultListModel<String>();
+    // List all rooms
+    // Get information on one room
+    // Create room
+    // Edit room
+    // Delete room
 
-        for (LinkedHashMap map : allFacilities) {
-            for(Object element : map.entrySet()) {
-                Map.Entry pair = (Map.Entry) element;
-                if(pair.getKey().equals("facilityType"))
-                    facilitiesList.addElement(pair.getValue());
+    public DefaultListModel getAllRoomsListModel() {
+        ArrayList<LinkedHashMap> allRooms = rooms.getAllRooms();
+        DefaultListModel roomsList = new DefaultListModel<String>();
+
+        if(allRooms != null) {
+            for (LinkedHashMap map : allRooms) {
+                StringBuilder string = new StringBuilder();
+                for (Object element : map.entrySet()) {
+                    Map.Entry pair = (Map.Entry) element;
+                    if (pair.getKey().equals("roomSize"))
+                        string.append("Size: " + pair.getValue());
+
+                    if (pair.getKey().equals("roomPricePerNight"))
+                        string.append(" Price: " + pair.getValue());
+                }
+                roomsList.addElement(string);
             }
         }
-
-        return facilitiesList;
+        return roomsList;
     }
 
-    // Return the arraylist/hashmap of all facilities
-    public ArrayList<LinkedHashMap> getAllFacilitiesHashMap() {
-        ArrayList<LinkedHashMap> allFacilities = facilities.getAllFacilities();
-        return allFacilities;
-    }*/
+    public ArrayList<LinkedHashMap> getAllRoomsHashMap() {
+        return rooms.getAllRooms();
+    }
 
-
+    public void createRoom(String roomDescription, int roomSize, float roomDiscount, float roomPricePerNight) {
+        rooms.insertUpdateRoom(0, roomDescription, roomSize, 0, roomDiscount, roomPricePerNight);
+    }
 }

@@ -1,8 +1,5 @@
 package modelLayer;
 import tools.QuickHash;
-import tools.StringTools;
-import tools.databaseQuery;
-
 import java.sql.SQLException;
 import java.util.*;
 
@@ -12,7 +9,6 @@ import static tools.databaseQuery.dbQueryField;
 import static tools.databaseQuery.dbExecute;
 
 public class Facilities {
-    databaseQuery db = new databaseQuery();
 
     private int facilityID; // Internal ID in the db, of no real consequence
     private String facilityType; // The type of the facility

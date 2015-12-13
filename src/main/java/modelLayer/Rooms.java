@@ -95,7 +95,11 @@ public class Rooms {
         }
         else {
             try {
-                id = Integer.parseInt(dbQueryField("SELECT roomID FROM rooms WHERE roomDescription = :roomDescription AND roomSize = :roomSize AND roomStatus = :roomStatus AND roomDiscount = :roomDiscount AND roomPricePerNight = :roomPricePerNight", "roomID", parameters));
+                String queryData = dbQueryField("SELECT roomID FROM rooms WHERE roomDescription = :roomDescription AND roomSize = :roomSize AND roomDiscount = :roomDiscount AND roomPricePerNight = :roomPricePerNight", "roomID", parameters);
+                if(!Objects.equals(queryData, ""))
+                    id = Integer.parseInt(queryData);
+                else
+                    id = 0;
             } catch (SQLException e) {
                 id = 0;
             }

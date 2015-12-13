@@ -1,20 +1,30 @@
 package guiLayer;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
+import controlLayer.GUI.roomsController;
 import controlLayer.GUI.startupController;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class roomBooking extends JPanel {
     private JTextField loggedInUserInformation;
     private DatePicker fromDatePicker;
     private DatePicker toDatePicker;
     private controlLayer.GUI.startupController startupController = new startupController();
+    private controlLayer.GUI.roomsController roomsController = new roomsController();
+
+    // Rooms list data
+    private DefaultListModel roomsListModel = roomsController.getAllRoomsListModel();
+    private ArrayList<LinkedHashMap> roomsAll = roomsController.getAllRoomsHashMap();
 
     public roomBooking(final JFrame frame) {
         setLayout(null);
@@ -209,7 +219,7 @@ public class roomBooking extends JPanel {
         btnCreateGuest.setBounds(277, 282, 89, 23);
         btnCreateGuest.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Error: ");
+
             }
         });
         guestsPanel.add(btnCreateGuest);
@@ -237,20 +247,27 @@ public class roomBooking extends JPanel {
         tabbedPane.addTab("Rooms", null, roomsPanel, null);
         roomsPanel.setLayout(null);
 
-        JList listRooms = new JList();
-        listRooms.setVisibleRowCount(200);
-        listRooms.setBounds(10, 11, 247, 294);
-        listRooms.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-
-            }
-        });
-        roomsPanel.add(listRooms);
-
         JTextPane textPaneRoomInformation = new JTextPane();
         textPaneRoomInformation.setBounds(267, 29, 332, 245);
         textPaneRoomInformation.setEnabled(false);
         roomsPanel.add(textPaneRoomInformation);
+
+        JList listRooms = new JList(roomsListModel);
+        listRooms.setVisibleRowCount(200);
+        listRooms.setBounds(10, 11, 247, 294);
+        listRooms.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                int selectedID = listRooms.getSelectedIndex();
+                LinkedHashMap roomInfo = roomsAll.get(selectedID);
+                StringBuilder text = new StringBuilder();
+                for (Object element : roomInfo.entrySet()) {
+                    Map.Entry pair = (Map.Entry) element;
+                    text.append(pair.getKey() + ": " + pair.getValue() + "\n");
+                }
+                textPaneRoomInformation.setText(text.toString());
+            }
+        });
+        roomsPanel.add(listRooms);
 
         JLabel labelRoomInformation = new JLabel("Room Information");
         labelRoomInformation.setBounds(267, 12, 160, 14);
@@ -260,7 +277,29 @@ public class roomBooking extends JPanel {
         btnCreateRoom.setBounds(277, 282, 89, 23);
         btnCreateRoom.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Error: ");
+                JTextField roomDescription = new JTextField();
+                JTextField roomSize = new JTextField();
+                JTextField roomDiscount = new JTextField();
+                JTextField roomPricePerNight = new JTextField();
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                panel.add(new JLabel("Room Description (string)"));
+                panel.add(roomDescription);
+                panel.add(new JLabel("Room Size (int)"));
+                panel.add(roomSize);
+                panel.add(new JLabel("Room Discount (float)"));
+                panel.add(roomDiscount);
+                panel.add(new JLabel("Room Price Per Night (float)"));
+                panel.add(roomPricePerNight);
+                int result = JOptionPane.showConfirmDialog(null, panel, "Create Room", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if(result == JOptionPane.OK_OPTION) {
+                    // Insert it to the database
+                    roomsController.createRoom(roomDescription.getText(), Integer.valueOf(roomSize.getText()), Float.parseFloat(roomDiscount.getText()), Float.parseFloat(roomPricePerNight.getText()));
+                    roomsListModel = roomsController.getAllRoomsListModel();
+                    roomsAll = roomsController.getAllRoomsHashMap();
+                    listRooms.setVisible(false);
+                    listRooms.setVisible(true);
+                }
             }
         });
         roomsPanel.add(btnCreateRoom);
