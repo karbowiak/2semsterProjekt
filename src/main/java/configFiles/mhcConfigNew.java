@@ -1,10 +1,10 @@
 package configFiles;
 
 public class mhcConfigNew {
-    public static final String driver = "";
-    public static final String databaseName = "";
-    public static final String username = "";
-    public static final String password = "";
+    public static final String driver = "jdbc:sqlserver://SERVERADDRESS:PORT";
+    public static final String databaseName = ";databaseName=DATABASENAME";
+    public static final String username = ";user=USERNAME";
+    public static final String password = ";password=PASSWORD";
 
     public static String getDriver() {
         return driver;
