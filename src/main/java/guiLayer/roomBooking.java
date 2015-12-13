@@ -1,6 +1,8 @@
 package guiLayer;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
+import controlLayer.GUI.guestsController;
+import controlLayer.GUI.rentalsController;
 import controlLayer.GUI.roomsController;
 import controlLayer.GUI.startupController;
 
@@ -16,16 +18,26 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class roomBooking extends JPanel {
-    private JTextField loggedInUserInformation;
     private DatePicker fromDatePicker;
     private DatePicker toDatePicker;
-    private controlLayer.GUI.startupController startupController = new startupController();
     private controlLayer.GUI.roomsController roomsController = new roomsController();
+    private controlLayer.GUI.guestsController guestsController = new guestsController();
+    private controlLayer.GUI.rentalsController rentalsController = new rentalsController();
 
-    // Rooms list data
+    // Rooms data
     private DefaultListModel roomsListModel = roomsController.getAllRoomsListModel();
     private ArrayList<LinkedHashMap> roomsAll = roomsController.getAllRoomsHashMap();
     private int roomSelectedID;
+
+    // Guests data
+    private DefaultListModel guestsListModel = guestsController.getAllGuestsListModel();
+    private ArrayList<LinkedHashMap> guestsAll = guestsController.getAllGuestsHashMap();
+    private int guestSelectedID;
+
+    // Rentals data
+    private DefaultListModel rentalsListModel = rentalsController.getAllRoomBookingsListModel();
+    private ArrayList<LinkedHashMap> rentalsAll = rentalsController.getAllBookingsHashMap();
+    private int rentalSelectedID;
 
     public roomBooking(final JFrame frame) {
         setLayout(null);
@@ -51,7 +63,8 @@ public class roomBooking extends JPanel {
         btnFacilitiesBooking.setBounds(140, 11, 120, 23);
         add(btnFacilitiesBooking);
 
-        loggedInUserInformation = new JTextField();
+        JTextField loggedInUserInformation = new JTextField();
+        controlLayer.GUI.startupController startupController = new startupController();
         loggedInUserInformation.setText(startupController.getLoggedInUserName() + " / " + startupController.getLoggedInUserID());
         loggedInUserInformation.setBounds(332, 12, 302, 20);
         loggedInUserInformation.setEnabled(false);
@@ -197,20 +210,27 @@ public class roomBooking extends JPanel {
         tabbedPane.addTab("Guests", null, guestsPanel, null);
         guestsPanel.setLayout(null);
 
-        JList listGuests = new JList();
-        listGuests.setVisibleRowCount(200);
-        listGuests.setBounds(10, 11, 247, 294);
-        listGuests.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-
-            }
-        });
-        guestsPanel.add(listGuests);
-
         JTextPane textPaneGuestInformation = new JTextPane();
         textPaneGuestInformation.setBounds(267, 29, 332, 245);
         textPaneGuestInformation.setEnabled(false);
         guestsPanel.add(textPaneGuestInformation);
+
+        JList listGuests = new JList(guestsListModel);
+        listGuests.setVisibleRowCount(200);
+        listGuests.setBounds(10, 11, 247, 294);
+        listGuests.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                guestSelectedID = listGuests.getSelectedIndex();
+                LinkedHashMap roomInfo = guestsAll.get(guestSelectedID);
+                StringBuilder text = new StringBuilder();
+                for (Object element : roomInfo.entrySet()) {
+                    Map.Entry pair = (Map.Entry) element;
+                    text.append(pair.getKey() + ": " + pair.getValue() + "\n");
+                }
+                textPaneGuestInformation.setText(text.toString());
+            }
+        });
+        guestsPanel.add(listGuests);
 
         JLabel labelGuestInformation = new JLabel("Guest Information");
         labelGuestInformation.setBounds(267, 12, 160, 14);
@@ -220,7 +240,41 @@ public class roomBooking extends JPanel {
         btnCreateGuest.setBounds(277, 282, 89, 23);
         btnCreateGuest.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                JTextField personFirstName = new JTextField();
+                JTextField personLastName = new JTextField();
+                JTextField personAddress = new JTextField();
+                JTextField personPassportInformation = new JTextField();
+                JTextField personPhoneNumber = new JTextField();
+                JTextField personEMail = new JTextField();
+                JTextField personBirthDate = new JTextField();
+                JTextField personFromCountry = new JTextField();
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                panel.add(new JLabel("First Name (string)"));
+                panel.add(personFirstName);
+                panel.add(new JLabel("Last Name (string)"));
+                panel.add(personLastName);
+                panel.add(new JLabel("Address (string)"));
+                panel.add(personAddress);
+                panel.add(new JLabel("Passport Information (string)"));
+                panel.add(personPassportInformation);
+                panel.add(new JLabel("Phone Number (string)"));
+                panel.add(personPhoneNumber);
+                panel.add(new JLabel("EMail Address (string)"));
+                panel.add(personEMail);
+                panel.add(new JLabel("Birth Date (string)"));
+                panel.add(personBirthDate);
+                panel.add(new JLabel("Country of Origin (string)"));
+                panel.add(personFromCountry);
 
+                int result = JOptionPane.showConfirmDialog(null, panel, "Create Booking", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if(result == JOptionPane.OK_OPTION) {
+                    // Insert it to the database
+                    guestsController.createGuest(personFirstName.getText(), personLastName.getText(), personAddress.getText(), personPassportInformation.getText(), personPhoneNumber.getText(), personEMail.getText(), personBirthDate.getText(), personFromCountry.getText());
+                    guestsListModel = guestsController.getAllGuestsListModel();
+                    guestsAll = guestsController.getAllGuestsHashMap();
+                    listGuests.setModel(guestsListModel);
+                }
             }
         });
         guestsPanel.add(btnCreateGuest);
@@ -228,18 +282,108 @@ public class roomBooking extends JPanel {
         JButton btnEditGuest = new JButton("Edit");
         btnEditGuest.setBounds(376, 282, 89, 23);
         btnEditGuest.addActionListener(new ActionListener() {
+            JTextField personID;
+            JTextField personFirstName;
+            JTextField personLastName;
+            JTextField personAddress;
+            JTextField personPassportInformation;
+            JTextField personPhoneNumber;
+            JTextField personEMail;
+            JTextField personBirthDate;
+            JTextField personFromCountry;
+            JTextField personType;
+            JTextField personFunction;
+
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Error: ");
+                LinkedHashMap guestInfo = guestsAll.get(guestSelectedID);
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                for (Object element : guestInfo.entrySet()) {
+                    Map.Entry pair = (Map.Entry) element;
+                    // See, now it would be nice with fucking dynamic variable creation, but can java do this?
+                    // nooooooooooo.. because java is a shit language, only used by shit people...............
+                    if(pair.getKey().equals("personID")) {
+                        personID = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(personID);
+                    }
+                    if(pair.getKey().equals("personFirstName")) {
+                        personFirstName = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(personFirstName);
+                    }
+                    if(pair.getKey().equals("personLastName")) {
+                        personLastName = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(personLastName);
+                    }
+                    if(pair.getKey().equals("personAddress")) {
+                        personAddress = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(personAddress);
+                    }
+                    if(pair.getKey().equals("personPassportInformation")) {
+                        personPassportInformation = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(personPassportInformation);
+                    }
+                    if(pair.getKey().equals("personPhoneNumber")) {
+                        personPhoneNumber = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(personPhoneNumber);
+                    }
+                    if(pair.getKey().equals("personEMail")) {
+                        personEMail = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(personEMail);
+                    }
+                    if(pair.getKey().equals("personBirthDate")) {
+                        personBirthDate = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(personBirthDate);
+                    }
+                    if(pair.getKey().equals("personFromCountry")) {
+                        personFromCountry = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(personFromCountry);
+                    }
+                    if(pair.getKey().equals("personType")) {
+                        personType = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(personType);
+                    }
+                    if(pair.getKey().equals("personFunction")) {
+                        personFunction = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(personFunction);
+                    }
+                }
+                int result = JOptionPane.showConfirmDialog(null, panel, "Update Guest", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if(result == JOptionPane.OK_OPTION) {
+                    // Insert it to the database
+                    guestsController.updateGuest(Integer.valueOf(personID.getText()), personFirstName.getText(), personLastName.getText(), personAddress.getText(), personPassportInformation.getText(), personPhoneNumber.getText(), personEMail.getText(), personBirthDate.getText(), personFromCountry.getText(), Integer.valueOf(personType.getText()), personFunction.getText());
+                    guestsListModel = guestsController.getAllGuestsListModel();
+                    guestsAll = guestsController.getAllGuestsHashMap();
+                    listGuests.setModel(guestsListModel);
+                }
             }
         });
         guestsPanel.add(btnEditGuest);
 
         JButton btnDeleteGuest = new JButton("Delete");
         btnDeleteGuest.setBounds(475, 282, 89, 23);
-        btnDeleteGuest.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Error: ");
+        btnDeleteGuest.addActionListener(e -> {
+            // Delete based on the roomSelectedID
+            guestSelectedID = listGuests.getSelectedIndex();
+            LinkedHashMap roomInfo = guestsAll.get(guestSelectedID);
+            for (Object element : roomInfo.entrySet()) {
+                Map.Entry pair = (Map.Entry) element;
+                if(pair.getKey().equals("personID"))
+                    guestsController.deleteGuest(Integer.valueOf(String.valueOf(pair.getValue())));
             }
+            guestsListModel = guestsController.getAllGuestsListModel();
+            guestsAll = guestsController.getAllGuestsHashMap();
+            listGuests.setModel(guestsListModel);
         });
         guestsPanel.add(btnDeleteGuest);
 
