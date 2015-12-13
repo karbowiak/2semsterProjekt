@@ -276,30 +276,28 @@ public class roomBooking extends JPanel {
 
         JButton btnCreateRoom = new JButton("Create");
         btnCreateRoom.setBounds(277, 282, 89, 23);
-        btnCreateRoom.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JTextField roomDescription = new JTextField();
-                JTextField roomSize = new JTextField();
-                JTextField roomDiscount = new JTextField();
-                JTextField roomPricePerNight = new JTextField();
-                JPanel panel = new JPanel(new GridLayout(0, 1));
-                panel.add(new JLabel("Room Description (string)"));
-                panel.add(roomDescription);
-                panel.add(new JLabel("Room Size (int)"));
-                panel.add(roomSize);
-                panel.add(new JLabel("Room Discount (float)"));
-                panel.add(roomDiscount);
-                panel.add(new JLabel("Room Price Per Night (float)"));
-                panel.add(roomPricePerNight);
-                int result = JOptionPane.showConfirmDialog(null, panel, "Create Room", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        btnCreateRoom.addActionListener(e -> {
+            JTextField roomDescription = new JTextField();
+            JTextField roomSize = new JTextField();
+            JTextField roomDiscount = new JTextField();
+            JTextField roomPricePerNight = new JTextField();
+            JPanel panel = new JPanel(new GridLayout(0, 1));
+            panel.add(new JLabel("Room Description (string)"));
+            panel.add(roomDescription);
+            panel.add(new JLabel("Room Size (int)"));
+            panel.add(roomSize);
+            panel.add(new JLabel("Room Discount (float)"));
+            panel.add(roomDiscount);
+            panel.add(new JLabel("Room Price Per Night (float)"));
+            panel.add(roomPricePerNight);
+            int result = JOptionPane.showConfirmDialog(null, panel, "Create Room", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-                if(result == JOptionPane.OK_OPTION) {
-                    // Insert it to the database
-                    roomsController.createRoom(roomDescription.getText(), Integer.valueOf(roomSize.getText()), Float.parseFloat(roomDiscount.getText()), Float.parseFloat(roomPricePerNight.getText()));
-                    roomsListModel = roomsController.getAllRoomsListModel();
-                    roomsAll = roomsController.getAllRoomsHashMap();
-                    listRooms.setModel(roomsListModel);
-                }
+            if(result == JOptionPane.OK_OPTION) {
+                // Insert it to the database
+                roomsController.createRoom(roomDescription.getText(), Integer.valueOf(roomSize.getText()), Float.parseFloat(roomDiscount.getText()), Float.parseFloat(roomPricePerNight.getText()));
+                roomsListModel = roomsController.getAllRoomsListModel();
+                roomsAll = roomsController.getAllRoomsHashMap();
+                listRooms.setModel(roomsListModel);
             }
         });
         roomsPanel.add(btnCreateRoom);
@@ -367,10 +365,18 @@ public class roomBooking extends JPanel {
 
         JButton btnDeleteRoom = new JButton("Delete");
         btnDeleteRoom.setBounds(475, 282, 89, 23);
-        btnDeleteRoom.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Error: ");
+        btnDeleteRoom.addActionListener(e -> {
+            // Delete based on the roomSelectedID
+            roomSelectedID = listRooms.getSelectedIndex();
+            LinkedHashMap roomInfo = roomsAll.get(roomSelectedID);
+            for (Object element : roomInfo.entrySet()) {
+                Map.Entry pair = (Map.Entry) element;
+                if(pair.getKey().equals("roomID"))
+                    roomsController.deleteRoom(Integer.valueOf(String.valueOf(pair.getValue())));
             }
+            roomsListModel = roomsController.getAllRoomsListModel();
+            roomsAll = roomsController.getAllRoomsHashMap();
+            listRooms.setModel(roomsListModel);
         });
         roomsPanel.add(btnDeleteRoom);
     }

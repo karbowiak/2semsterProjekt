@@ -49,4 +49,8 @@ public class roomsController {
     public void updateRoom(int roomID, String roomDescription, int roomSize, int roomStatus, float roomDiscount, float roomPricePerNight) {
         rooms.insertUpdateRoom(roomID, roomDescription, roomSize, roomStatus, roomDiscount, roomPricePerNight);
     }
+
+    public void deleteRoom(int roomID) {
+        rooms.deleteRoom(roomID);
+    }
 }
