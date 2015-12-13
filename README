@@ -1,1 +1,10 @@
-something something
+copy src/main/java/configFiles/mhcConfigNew.java to src/main/java/configFiles/mhcConfig.java
+Fill in the server address, port, database, username and password
+Then import the .sql tables from src/main/java/sqlFiles/createTables/*.sql to your database
+
+After that you can launch it by running src/main/java/main.java
+
+Depending on the IDE, you might have to tell it to include the two libraries under lib.
+
+# IDE
+The entire thing was written in IntelliJ, why? because Eclipse is shit, and it shouldn't matter which IDE you use.
