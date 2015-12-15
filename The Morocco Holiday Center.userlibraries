@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="sqljdbc4">
+    <archive path="C:/projects/2semsterProjekt/lib/sqljdbc4.jar" />
+  </library>
+  <library name="microba-0.4.4.3">
+    <archive path="C:/projects/2semsterProjekt/lib/microba-0.4.4.3.jar" />
+  </library>
+</eclipse-userlibraries>
+
