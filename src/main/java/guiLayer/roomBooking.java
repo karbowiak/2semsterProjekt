@@ -5,6 +5,7 @@ import controlLayer.GUI.guestsController;
 import controlLayer.GUI.rentalsController;
 import controlLayer.GUI.roomsController;
 import controlLayer.GUI.startupController;
+import modelLayer.roomBookingGuests;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -12,6 +13,8 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -24,20 +27,32 @@ public class roomBooking extends JPanel {
     private controlLayer.GUI.guestsController guestsController = new guestsController();
     private controlLayer.GUI.rentalsController rentalsController = new rentalsController();
 
-    // Rooms data
-    private DefaultListModel roomsListModel = roomsController.getAllRoomsListModel();
-    private ArrayList<LinkedHashMap> roomsAll = roomsController.getAllRoomsHashMap();
-    private int roomSelectedID;
+    // Booking creation
+    private DefaultComboBoxModel unrentedRoomsList = rentalsController.getAllUnrentedRoomsComboBox();
+    private DefaultComboBoxModel guestComboBoxModelList = guestsController.getAllGuestsComboBoxModel();
+    private ArrayList<LinkedHashMap> unrentedRoomsListHashMap = rentalsController.getAllUnrentedRoomsHashMap();
+    private ArrayList<LinkedHashMap> guestArrayListLinkedHashMap = guestsController.getAllGuestsHashMap();
+    private int selectedRoom;
+    private int selectedGuest;
+    private String selectedFromDate;
+    private String selectedToDate;
+    private int selectedRoomID;
+    private int selectedGuestID;
+
+    // Rentals data
+    private DefaultListModel rentalsListModel = rentalsController.getAllRoomBookingsListModel();
+    private ArrayList<LinkedHashMap> rentalsAll = rentalsController.getAllBookingsHashMap();
+    private int rentalSelectedID;
 
     // Guests data
     private DefaultListModel guestsListModel = guestsController.getAllGuestsListModel();
     private ArrayList<LinkedHashMap> guestsAll = guestsController.getAllGuestsHashMap();
     private int guestSelectedID;
 
-    // Rentals data
-    private DefaultListModel rentalsListModel = rentalsController.getAllRoomBookingsListModel();
-    private ArrayList<LinkedHashMap> rentalsAll = rentalsController.getAllBookingsHashMap();
-    private int rentalSelectedID;
+    // Rooms data
+    private DefaultListModel roomsListModel = roomsController.getAllRoomsListModel();
+    private ArrayList<LinkedHashMap> roomsAll = roomsController.getAllRoomsHashMap();
+    private int roomSelectedID;
 
     public roomBooking(final JFrame frame) {
         setLayout(null);
@@ -108,17 +123,27 @@ public class roomBooking extends JPanel {
         lblToDate.setBounds(10, 86, 71, 14);
         roomBookingPanel.add(lblToDate);
 
-        JComboBox comboBoxRooms = new JComboBox();
-        comboBoxRooms.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        JComboBox comboBoxRooms = new JComboBox(unrentedRoomsList);
+        comboBoxRooms.addActionListener(e -> {
+            selectedRoomID = comboBoxRooms.getSelectedIndex();
+            LinkedHashMap roomInfo = unrentedRoomsListHashMap.get(selectedRoomID);
+            for (Object element : roomInfo.entrySet()) {
+                Map.Entry pair = (Map.Entry) element;
+                if(pair.getKey().equals("roomID"))
+                    selectedRoom = Integer.valueOf(String.valueOf(pair.getValue()));
             }
         });
         comboBoxRooms.setBounds(91, 8, 385, 20);
         roomBookingPanel.add(comboBoxRooms);
 
-        JComboBox comboBoxGuests = new JComboBox();
-        comboBoxGuests.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        JComboBox comboBoxGuests = new JComboBox(guestComboBoxModelList);
+        comboBoxGuests.addActionListener(e -> {
+            selectedGuestID = comboBoxRooms.getSelectedIndex();
+            LinkedHashMap personInfo = guestArrayListLinkedHashMap.get(selectedGuestID);
+            for (Object element : personInfo.entrySet()) {
+                Map.Entry pair = (Map.Entry) element;
+                if(pair.getKey().equals("personID"))
+                    selectedGuest = Integer.valueOf(String.valueOf(pair.getValue())); // Why isn't it setting the selectedGuest (personID) correctly 90% of the time?
             }
         });
         comboBoxGuests.setBounds(91, 33, 385, 20);
@@ -128,28 +153,29 @@ public class roomBooking extends JPanel {
         fromDatePicker.setBounds(91, 58, 385, 20);
         roomBookingPanel.add(fromDatePicker);
 
-        fromDatePicker.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(fromDatePicker.getDate());
-            }
+        fromDatePicker.addActionListener(e -> {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            selectedFromDate = dateFormat.format(fromDatePicker.getDate());
         });
 
         toDatePicker = new DatePicker(new Date());
         toDatePicker.setBounds(91, 83, 385, 20);
         roomBookingPanel.add(toDatePicker);
 
-        toDatePicker.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(toDatePicker.getDate());
-            }
+        toDatePicker.addActionListener(e -> {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            selectedToDate = dateFormat.format(toDatePicker.getDate());
         });
 
         JButton btnCreateBooking = new JButton("Create Booking");
         btnCreateBooking.setBounds(362, 109, 115, 30);
-        btnCreateBooking.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Error: ");
-            }
+        btnCreateBooking.addActionListener(e -> {
+            // Insert
+            rentalsController.createBooking(selectedRoom, 1, selectedFromDate, selectedToDate, 1);
+            // Get the booking ID
+            int bookingID = Integer.valueOf(rentalsController.getBookingID(selectedRoom, 1, selectedFromDate, selectedToDate, 1));
+            // Insert the guest to the roomBookingGuests table
+            guestsController.addGuestToBooking(bookingID, selectedGuest);
         });
         roomBookingPanel.add(btnCreateBooking);
 
@@ -158,21 +184,26 @@ public class roomBooking extends JPanel {
         tabbedPane.addTab("Rentals", null, rentals, null);
         rentals.setLayout(null);
 
-        JList listRentals = new JList();
-        listRentals.setVisibleRowCount(200);
-        listRentals.setBounds(10, 11, 247, 294);
-        listRentals.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-
-            }
-        });
-
-        rentals.add(listRentals);
-
         JTextPane textPaneRentalInformation = new JTextPane();
         textPaneRentalInformation.setBounds(267, 29, 332, 245);
         textPaneRentalInformation.setEnabled(false);
         rentals.add(textPaneRentalInformation);
+
+        JList listRentals = new JList(rentalsListModel);
+        listRentals.setVisibleRowCount(200);
+        listRentals.setBounds(10, 11, 247, 294);
+        listRentals.addListSelectionListener(e -> {
+            rentalSelectedID = listRentals.getSelectedIndex();
+            LinkedHashMap roomInfo = rentalsAll.get(rentalSelectedID);
+            StringBuilder text = new StringBuilder();
+            for (Object element : roomInfo.entrySet()) {
+                Map.Entry pair = (Map.Entry) element;
+                text.append(pair.getKey() + ": " + pair.getValue() + "\n");
+            }
+            textPaneRentalInformation.setText(text.toString());
+        });
+
+        rentals.add(listRentals);
 
         JLabel labelRentalInformation = new JLabel("Rental Information");
         labelRentalInformation.setBounds(267, 12, 160, 14);
@@ -180,9 +211,32 @@ public class roomBooking extends JPanel {
 
         JButton btnCreateRental = new JButton("Create");
         btnCreateRental.setBounds(277, 282, 89, 23);
-        btnCreateRental.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Error: ");
+        btnCreateRental.addActionListener(e -> {
+            JTextField roomID = new JTextField();
+            JTextField bookingBureau = new JTextField();
+            JTextField fromDate = new JTextField();
+            JTextField toDate = new JTextField();
+            JTextField employeeID = new JTextField();
+            JPanel panel = new JPanel(new GridLayout(0, 1));
+            panel.add(new JLabel("RoomID (int)"));
+            panel.add(roomID);
+            panel.add(new JLabel("Booking Bureau (int)"));
+            panel.add(bookingBureau);
+            panel.add(new JLabel("From Date (2015-01-01 00:00:00)"));
+            panel.add(fromDate);
+            panel.add(new JLabel("To Date (2015-01-01 00:00:00)"));
+            panel.add(toDate);
+            panel.add(new JLabel("EmployeeID (int)"));
+            panel.add(employeeID);
+
+            int result = JOptionPane.showConfirmDialog(null, panel, "Create Booking", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            if(result == JOptionPane.OK_OPTION) {
+                // Insert it to the database
+                rentalsController.createBooking(Integer.valueOf(roomID.getText()), Integer.valueOf(bookingBureau.getText()), fromDate.getText(), toDate.getText(), Integer.valueOf(employeeID.getText()));
+                rentalsListModel = rentalsController.getAllRoomBookingsListModel();
+                rentalsAll = rentalsController.getAllBookingsHashMap();
+                listRentals.setModel(rentalsListModel);
             }
         });
         rentals.add(btnCreateRental);
@@ -190,18 +244,113 @@ public class roomBooking extends JPanel {
         JButton btnEditRental = new JButton("Edit");
         btnEditRental.setBounds(376, 282, 89, 23);
         btnEditRental.addActionListener(new ActionListener() {
+            JTextField bookingID;
+            JTextField roomID;
+            JTextField bookingBureau;
+            JTextField fromDate;
+            JTextField toDate;
+            JTextField checkinDate;
+            JTextField checkoutDate;
+            JTextField priceBeforeDiscount;
+            JTextField discount;
+            JTextField totalPrice;
+            JTextField employeeID;
+            JTextField bookingActive;
+
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Error: ");
+                LinkedHashMap rentalInfo = rentalsAll.get(rentalSelectedID);
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                for (Object element : rentalInfo.entrySet()) {
+                    Map.Entry pair = (Map.Entry) element;
+                    // See, now it would be nice with fucking dynamic variable creation, but can java do this?
+                    // nooooooooooo.. because java is a shit language, only used by shit people...............
+                    if(pair.getKey().equals("bookingID")) {
+                        bookingID = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(bookingID);
+                    }
+                    if(pair.getKey().equals("roomID")) {
+                        roomID = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(roomID);
+                    }
+                    if(pair.getKey().equals("bookingBureau")) {
+                        bookingBureau = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(bookingBureau);
+                    }
+                    if(pair.getKey().equals("fromDate")) {
+                        fromDate = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(fromDate);
+                    }
+                    if(pair.getKey().equals("toDate")) {
+                        toDate = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(toDate);
+                    }
+                    if(pair.getKey().equals("checkinDate")) {
+                        checkinDate = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(checkinDate);
+                    }
+                    if(pair.getKey().equals("checkoutDate")) {
+                        checkoutDate = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(checkoutDate);
+                    }
+                    if(pair.getKey().equals("priceBeforeDiscount")) {
+                        priceBeforeDiscount = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(priceBeforeDiscount);
+                    }
+                    if(pair.getKey().equals("discount")) {
+                        discount = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(discount);
+                    }
+                    if(pair.getKey().equals("totalPrice")) {
+                        totalPrice = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(totalPrice);
+                    }
+                    if(pair.getKey().equals("employeeID")) {
+                        employeeID = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(employeeID);
+                    }
+                    if(pair.getKey().equals("bookingActive")) {
+                        bookingActive = new JTextField(String.valueOf(pair.getValue()));
+                        panel.add(new JLabel(pair.getKey() + ":"));
+                        panel.add(bookingActive);
+                    }
+                }
+                int result = JOptionPane.showConfirmDialog(null, panel, "Update Rental", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if(result == JOptionPane.OK_OPTION) {
+                    // Insert it to the database
+                    rentalsController.updateBooking(Integer.valueOf(bookingID.getText()), Integer.valueOf(roomID.getText()), Integer.valueOf(bookingBureau.getText()), fromDate.getText(), toDate.getText(), checkinDate.getText(), checkoutDate.getText(), Float.valueOf(priceBeforeDiscount.getText()), Float.valueOf(discount.getText()), Float.valueOf(totalPrice.getText()), Integer.valueOf(employeeID.getText()), Integer.valueOf(bookingActive.getText()));
+                    rentalsListModel = rentalsController.getAllRoomBookingsListModel();
+                    rentalsAll = rentalsController.getAllBookingsHashMap();
+                    listRentals.setModel(rentalsListModel);
+                }
             }
         });
         rentals.add(btnEditRental);
 
         JButton btnDeleteRental = new JButton("Delete");
         btnDeleteRental.setBounds(475, 282, 89, 23);
-        btnDeleteRental.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Error: ");
+        btnDeleteRental.addActionListener(e -> {
+            rentalSelectedID = listRentals.getSelectedIndex();
+            LinkedHashMap roomInfo = rentalsAll.get(rentalSelectedID);
+            for (Object element : roomInfo.entrySet()) {
+                Map.Entry pair = (Map.Entry) element;
+                if(pair.getKey().equals("bookingID"))
+                    rentalsController.deleteBooking(Integer.valueOf(String.valueOf(pair.getValue())));
             }
+            rentalsListModel = rentalsController.getAllRoomBookingsListModel();
+            rentalsAll = rentalsController.getAllBookingsHashMap();
+            listRentals.setModel(rentalsListModel);
         });
         rentals.add(btnDeleteRental);
 
@@ -218,17 +367,15 @@ public class roomBooking extends JPanel {
         JList listGuests = new JList(guestsListModel);
         listGuests.setVisibleRowCount(200);
         listGuests.setBounds(10, 11, 247, 294);
-        listGuests.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                guestSelectedID = listGuests.getSelectedIndex();
-                LinkedHashMap roomInfo = guestsAll.get(guestSelectedID);
-                StringBuilder text = new StringBuilder();
-                for (Object element : roomInfo.entrySet()) {
-                    Map.Entry pair = (Map.Entry) element;
-                    text.append(pair.getKey() + ": " + pair.getValue() + "\n");
-                }
-                textPaneGuestInformation.setText(text.toString());
+        listGuests.addListSelectionListener(e -> {
+            guestSelectedID = listGuests.getSelectedIndex();
+            LinkedHashMap roomInfo = guestsAll.get(guestSelectedID);
+            StringBuilder text = new StringBuilder();
+            for (Object element : roomInfo.entrySet()) {
+                Map.Entry pair = (Map.Entry) element;
+                text.append(pair.getKey() + ": " + pair.getValue() + "\n");
             }
+            textPaneGuestInformation.setText(text.toString());
         });
         guestsPanel.add(listGuests);
 

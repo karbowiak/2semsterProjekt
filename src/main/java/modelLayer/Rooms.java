@@ -34,6 +34,15 @@ public class Rooms {
         }
     }
 
+    public ArrayList<LinkedHashMap> getAllUnrentedRooms() {
+        Map<String, String> parameters = new QuickHash();
+        try {
+            return dbQuery("SELECT * FROM rooms WHERE roomStatus = 0", parameters);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
     // Get all data for a single room by roomID
     public LinkedHashMap getRoomByRoomID(int roomID) {
         Map<String, String> parameters = new QuickHash(":roomID", String.valueOf(roomID));

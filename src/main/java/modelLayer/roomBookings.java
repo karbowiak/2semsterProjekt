@@ -54,21 +54,9 @@ public class roomBookings {
     public int insertUpdateBooking() {
         return insertUpdateBooking(0, 0, 0, "", "", "", "", 0, 0, 0, 0, 1);
     }
-
     public int insertUpdateBooking(int bookingID, int roomID, int bookingBureau, String fromDate, String toDate, String checkinDate, String checkoutDate, float priceBeforeDiscount, float discount, float totalPrice, int employeeID, int bookingActive) {
         int id;
-        Map<String, String> parameters = new QuickHash(
-                ":roomID", String.valueOf(roomID),
-                ":bookingBureau", String.valueOf(bookingBureau),
-                ":fromDate", String.valueOf(fromDate),
-                ":toDate", String.valueOf(toDate),
-                ":checkinDate", String.valueOf(checkinDate),
-                ":checkoutDate", String.valueOf(checkoutDate),
-                ":priceBeforeDiscount", String.valueOf(priceBeforeDiscount),
-                ":discount", String.valueOf(discount),
-                ":totalPrice", String.valueOf(totalPrice),
-                ":employeeID", String.valueOf(employeeID)
-        );
+        Map<String, String> parameters = new QuickHash(":roomID", String.valueOf(roomID), ":bookingBureau", String.valueOf(bookingBureau), ":fromDate", String.valueOf(fromDate), ":toDate", String.valueOf(toDate), ":checkinDate", String.valueOf(checkinDate), ":checkoutDate", String.valueOf(checkoutDate), ":priceBeforeDiscount", String.valueOf(priceBeforeDiscount), ":discount", String.valueOf(discount), ":totalPrice", String.valueOf(totalPrice), ":employeeID", String.valueOf(employeeID));
 
         if(bookingID > 0) {
             id = bookingID;
@@ -87,7 +75,7 @@ public class roomBookings {
         // If id is larger than 0 then we update, else we insert
         if(id > 0) {
             Map<String, String> updateParameters = new QuickHash(
-                    "bookingID", String.valueOf(id),
+                    ":bookingID", String.valueOf(id),
                     ":roomID", String.valueOf(roomID),
                     ":bookingBureau", String.valueOf(bookingBureau),
                     ":fromDate", String.valueOf(fromDate),
@@ -131,7 +119,7 @@ public class roomBookings {
         else {
             // Insert
             try {
-                dbExecute("INSERT INTO roomBookings (roomID, bookingbureau, fromDate, toDate, priceBeforeDiscount, discount, totalPrice, employeeID) VALUES (:roomID, :bookingBureau, :fromDate, :toDate, :priceBeforeDiscount, :discount, :totalPrice, :employeeID)", parameters);
+                dbExecute("INSERT INTO roomBookings (roomID, bookingBureau, fromDate, toDate, priceBeforeDiscount, discount, totalPrice, employeeID) VALUES (:roomID, :bookingBureau, :fromDate, :toDate, :priceBeforeDiscount, :discount, :totalPrice, :employeeID)", parameters);
             } catch (SQLException e) {
                 return 0;
             }
@@ -145,7 +133,7 @@ public class roomBookings {
         // set bookingActive to 0
         Map<String, String> parameters = new QuickHash(":bookingID", String.valueOf(bookingID));
         try {
-            dbExecute("DELETE FROM roomBookings WHERE bookingID = :bookingID", parameters);
+            dbExecute("UPDATE roomBookings SET bookingActive = 0 WHERE bookingID = :bookingID", parameters);
         } catch (SQLException e) {
             return false;
         }
