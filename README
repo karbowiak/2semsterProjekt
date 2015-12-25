@@ -8,3 +8,7 @@ Depending on the IDE, you might have to tell it to include the two libraries und
 
 # IDE
 The entire thing was written in IntelliJ, why? because Eclipse is shit, and it shouldn't matter which IDE you use.
+
+*sigh*
+Couple of days before turn in, it was deemed that this application wouldn't work, because the models weren't right,
+eventho the models for this was made - but the teachers wouldn't sign off on them - so fuck the teachers and fuck java.
