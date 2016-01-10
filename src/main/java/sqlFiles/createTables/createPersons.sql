@@ -1,14 +1,10 @@
-CREATE TABLE persons(
+CREATE TABLE persons (
   personID INT NOT NULL IDENTITY(1,1),
-  personFirstName VARCHAR(255) NOT NULL,
-  personLastName VARCHAR(255) NOT NULL,
-  personAddress VARCHAR(255) NOT NULL,
-  personPassportInformation VARCHAR(255) DEFAULT(NULL),
-  personPhoneNumber VARCHAR(255) NOT NULL,
-  personEMail VARCHAR(255) NOT NULL,
-  personBirthDate VARCHAR(255) NOT NULL,
-  personFromCountry VARCHAR(255) NOT NULL,
-  personType INT NOT NULL,
-  personFunction VARCHAR(255) DEFAULT(NULL),
+  firstName VARCHAR(255) NOT NULL,
+  lastName VARCHAR(255) NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  country VARCHAR(255) NOT NULL,
+  phoneNumber VARCHAR(255) NOT NULL,
+  type VARCHAR(255) NOT NULL,
   PRIMARY KEY (personID)
 );

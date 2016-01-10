@@ -1,0 +1,11 @@
+CREATE TABLE time (
+  timeID INT NOT NULL IDENTITY(1,1),
+  date VARCHAR(255) NOT NULL,
+  numberOfNights VARCHAR(255) NOT NULL,
+  roomType VARCHAR(255) NOT NULL,
+  numberOfPersons VARCHAR(255) NOT NULL,
+  status VARCHAR(255) NOT NULL,
+  bookingID VARCHAR(255) NOT NULL,
+  PRIMARY KEY (timeID),
+  FOREIGN KEY (bookingID) REFERENCES bookings(bookingID)
+);

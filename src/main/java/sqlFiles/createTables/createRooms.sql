@@ -1,9 +1,11 @@
 CREATE TABLE rooms (
   roomID INT NOT NULL IDENTITY(1,1),
-  roomDescription VARCHAR(128) NOT NULL,
-  roomSize INT NOT NULL,
-  roomStatus INT NOT NULL DEFAULT 0,
-  roomDiscount FLOAT NOT NULL,
-  roomPricePerNight FLOAT NOT NULL,
+  roomNumber VARCHAR(255) NOT NULL,
+  description VARCHAR(255) NOT NULL,
+  status VARCHAR(255) NOT NULL,
+  discount VARCHAR(255) NOT NULL,
+  price VARCHAR(255) NOT NULL,
+  timeID VARCHAR(255) NOT NULL,
   PRIMARY KEY (roomID),
+  FOREIGN KEY (timeID) REFERENCES time(timeID)
 );
