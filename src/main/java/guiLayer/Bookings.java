@@ -166,6 +166,7 @@ public class Bookings extends JPanel {
             selectedToDate = dateFormat.format(toDatePicker.getDate());
         });
 
+        JList listRentals = new JList(rentalsListModel);
         JButton btnCreateBooking = new JButton("Create Booking");
         btnCreateBooking.setBounds(362, 109, 115, 30);
         btnCreateBooking.addActionListener(e -> {
@@ -175,6 +176,11 @@ public class Bookings extends JPanel {
             int bookingID = Integer.valueOf(bookingsController.getBookingID(selectedRoom, 1, selectedFromDate, selectedToDate, 1));
             // Insert the guest to the roomBookingGuests table
             guestsController.addGuestToBooking(bookingID, selectedGuest);
+
+            // Reload the rentals list
+            rentalsListModel = bookingsController.getAllRoomBookingsListModel();
+            rentalsAll = bookingsController.getAllBookingsHashMap();
+            listRentals.setModel(rentalsListModel);
         });
         roomBookingPanel.add(btnCreateBooking);
 
@@ -188,7 +194,6 @@ public class Bookings extends JPanel {
         textPaneRentalInformation.setEnabled(false);
         rentals.add(textPaneRentalInformation);
 
-        JList listRentals = new JList(rentalsListModel);
         listRentals.setVisibleRowCount(200);
         listRentals.setBounds(10, 11, 247, 294);
         listRentals.addListSelectionListener(e -> {
