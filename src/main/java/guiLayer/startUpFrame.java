@@ -52,8 +52,8 @@ public class startUpFrame extends JPanel {
         btnRoomBooking.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                roomBooking roomBooking = new roomBooking(frame);
-                frame.setContentPane(roomBooking);
+                Bookings Bookings = new Bookings(frame);
+                frame.setContentPane(Bookings);
 
             }
         });

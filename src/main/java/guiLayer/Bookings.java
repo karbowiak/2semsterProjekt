@@ -2,10 +2,9 @@ package guiLayer;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
 import controlLayer.GUI.guestsController;
-import controlLayer.GUI.rentalsController;
+import controlLayer.GUI.bookingsController;
 import controlLayer.GUI.roomsController;
 import controlLayer.GUI.startupController;
-import modelLayer.roomBookingGuests;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -20,17 +19,17 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class roomBooking extends JPanel {
+public class Bookings extends JPanel {
     private DatePicker fromDatePicker;
     private DatePicker toDatePicker;
     private controlLayer.GUI.roomsController roomsController = new roomsController();
     private controlLayer.GUI.guestsController guestsController = new guestsController();
-    private controlLayer.GUI.rentalsController rentalsController = new rentalsController();
+    private bookingsController bookingsController = new bookingsController();
 
     // Booking creation
-    private DefaultComboBoxModel unrentedRoomsList = rentalsController.getAllUnrentedRoomsComboBox();
+    private DefaultComboBoxModel unrentedRoomsList = bookingsController.getAllUnrentedRoomsComboBox();
     private DefaultComboBoxModel guestComboBoxModelList = guestsController.getAllGuestsComboBoxModel();
-    private ArrayList<LinkedHashMap> unrentedRoomsListHashMap = rentalsController.getAllUnrentedRoomsHashMap();
+    private ArrayList<LinkedHashMap> unrentedRoomsListHashMap = bookingsController.getAllUnrentedRoomsHashMap();
     private ArrayList<LinkedHashMap> guestArrayListLinkedHashMap = guestsController.getAllGuestsHashMap();
     private int selectedRoom;
     private int selectedGuest;
@@ -40,8 +39,8 @@ public class roomBooking extends JPanel {
     private int selectedGuestID;
 
     // Rentals data
-    private DefaultListModel rentalsListModel = rentalsController.getAllRoomBookingsListModel();
-    private ArrayList<LinkedHashMap> rentalsAll = rentalsController.getAllBookingsHashMap();
+    private DefaultListModel rentalsListModel = bookingsController.getAllRoomBookingsListModel();
+    private ArrayList<LinkedHashMap> rentalsAll = bookingsController.getAllBookingsHashMap();
     private int rentalSelectedID;
 
     // Guests data
@@ -54,7 +53,7 @@ public class roomBooking extends JPanel {
     private ArrayList<LinkedHashMap> roomsAll = roomsController.getAllRoomsHashMap();
     private int roomSelectedID;
 
-    public roomBooking(final JFrame frame) {
+    public Bookings(final JFrame frame) {
         setLayout(null);
         setBounds(100, 100, 660, 430);
         setVisible(true);
@@ -171,9 +170,9 @@ public class roomBooking extends JPanel {
         btnCreateBooking.setBounds(362, 109, 115, 30);
         btnCreateBooking.addActionListener(e -> {
             // Insert
-            rentalsController.createBooking(selectedRoom, 1, selectedFromDate, selectedToDate, 1);
+            bookingsController.createBooking(selectedRoom, 1, selectedFromDate, selectedToDate, 1);
             // Get the booking ID
-            int bookingID = Integer.valueOf(rentalsController.getBookingID(selectedRoom, 1, selectedFromDate, selectedToDate, 1));
+            int bookingID = Integer.valueOf(bookingsController.getBookingID(selectedRoom, 1, selectedFromDate, selectedToDate, 1));
             // Insert the guest to the roomBookingGuests table
             guestsController.addGuestToBooking(bookingID, selectedGuest);
         });
@@ -233,9 +232,9 @@ public class roomBooking extends JPanel {
 
             if(result == JOptionPane.OK_OPTION) {
                 // Insert it to the database
-                rentalsController.createBooking(Integer.valueOf(roomID.getText()), Integer.valueOf(bookingBureau.getText()), fromDate.getText(), toDate.getText(), Integer.valueOf(employeeID.getText()));
-                rentalsListModel = rentalsController.getAllRoomBookingsListModel();
-                rentalsAll = rentalsController.getAllBookingsHashMap();
+                bookingsController.createBooking(Integer.valueOf(roomID.getText()), Integer.valueOf(bookingBureau.getText()), fromDate.getText(), toDate.getText(), Integer.valueOf(employeeID.getText()));
+                rentalsListModel = bookingsController.getAllRoomBookingsListModel();
+                rentalsAll = bookingsController.getAllBookingsHashMap();
                 listRentals.setModel(rentalsListModel);
             }
         });
@@ -329,9 +328,9 @@ public class roomBooking extends JPanel {
 
                 if(result == JOptionPane.OK_OPTION) {
                     // Insert it to the database
-                    rentalsController.updateBooking(Integer.valueOf(bookingID.getText()), Integer.valueOf(roomID.getText()), Integer.valueOf(bookingBureau.getText()), fromDate.getText(), toDate.getText(), checkinDate.getText(), checkoutDate.getText(), Float.valueOf(priceBeforeDiscount.getText()), Float.valueOf(discount.getText()), Float.valueOf(totalPrice.getText()), Integer.valueOf(employeeID.getText()), Integer.valueOf(bookingActive.getText()));
-                    rentalsListModel = rentalsController.getAllRoomBookingsListModel();
-                    rentalsAll = rentalsController.getAllBookingsHashMap();
+                    bookingsController.updateBooking(Integer.valueOf(bookingID.getText()), Integer.valueOf(roomID.getText()), Integer.valueOf(bookingBureau.getText()), fromDate.getText(), toDate.getText(), checkinDate.getText(), checkoutDate.getText(), Float.valueOf(priceBeforeDiscount.getText()), Float.valueOf(discount.getText()), Float.valueOf(totalPrice.getText()), Integer.valueOf(employeeID.getText()), Integer.valueOf(bookingActive.getText()));
+                    rentalsListModel = bookingsController.getAllRoomBookingsListModel();
+                    rentalsAll = bookingsController.getAllBookingsHashMap();
                     listRentals.setModel(rentalsListModel);
                 }
             }
@@ -346,10 +345,10 @@ public class roomBooking extends JPanel {
             for (Object element : roomInfo.entrySet()) {
                 Map.Entry pair = (Map.Entry) element;
                 if(pair.getKey().equals("bookingID"))
-                    rentalsController.deleteBooking(Integer.valueOf(String.valueOf(pair.getValue())));
+                    bookingsController.deleteBooking(Integer.valueOf(String.valueOf(pair.getValue())));
             }
-            rentalsListModel = rentalsController.getAllRoomBookingsListModel();
-            rentalsAll = rentalsController.getAllBookingsHashMap();
+            rentalsListModel = bookingsController.getAllRoomBookingsListModel();
+            rentalsAll = bookingsController.getAllBookingsHashMap();
             listRentals.setModel(rentalsListModel);
         });
         rentals.add(btnDeleteRental);

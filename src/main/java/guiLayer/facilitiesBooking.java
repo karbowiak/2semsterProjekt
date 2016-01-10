@@ -3,15 +3,12 @@ package guiLayer;
 import com.michaelbaranov.microba.calendar.DatePicker;
 import controlLayer.GUI.facilitiesController;
 import controlLayer.GUI.startupController;
-import modelLayer.Facilities;
-import sun.awt.image.ImageWatched;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.*;
 
 public class facilitiesBooking extends JPanel {
@@ -32,8 +29,8 @@ public class facilitiesBooking extends JPanel {
         btnRoomBooking.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                roomBooking roomBooking = new roomBooking(frame);
-                frame.setContentPane(roomBooking);
+                Bookings Bookings = new Bookings(frame);
+                frame.setContentPane(Bookings);
             }
         });
         btnRoomBooking.setBounds(10, 11, 120, 23);
