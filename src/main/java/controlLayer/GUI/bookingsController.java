@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class rentalsController {
+public class bookingsController {
     // Load the Guests model
     roomBookings booking = new roomBookings();
     Rooms rooms = new Rooms();
