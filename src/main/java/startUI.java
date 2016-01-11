@@ -18,7 +18,7 @@ public class startUI extends Thread {
     public static void startUI() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, SQLException {
         // Setup the window decorator
         JFrame.setDefaultLookAndFeelDecorated(true);
-        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
         // Load the UI
         EventQueue.invokeLater(new Runnable() {
