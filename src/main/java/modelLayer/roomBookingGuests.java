@@ -17,7 +17,7 @@ public class roomBookingGuests {
     public ArrayList<LinkedHashMap> getAllGuestsByBookingID(int bookingID) {
         Map<String, String> parameters = new QuickHash(":bookingID", String.valueOf(bookingID));
         try {
-            return dbQuery("SELECT guestID FROM roomBookingGuests WHERE bookingID = :bookingID", parameters);
+            return dbQuery("SELECT guestID FROM bookingGuests WHERE bookingID = :bookingID", parameters);
         } catch (SQLException e) {
             return null;
         }
@@ -28,7 +28,7 @@ public class roomBookingGuests {
         int id;
         Map<String, String> parameters = new QuickHash(":bookingID", String.valueOf(bookingID), ":guestID", String.valueOf(guestID));
         try {
-            dbExecute("INSERT INTO roomBookingGuests (bookingID, guestID) VALUES (:bookingID, :guestID)", parameters);
+            dbExecute("INSERT INTO bookingGuests (bookingID, guestID) VALUES (:bookingID, :guestID)", parameters);
         } catch (SQLException e) {
             return false;
         }
@@ -38,7 +38,7 @@ public class roomBookingGuests {
     public boolean deleteGuestFromBooking(int bookingID, int guestID) {
         Map<String, String> parameters = new QuickHash(":bookingID", String.valueOf(bookingID), ":guestID", String.valueOf(guestID));
         try {
-            dbExecute("DELETE FROM roomBookingGuests WHERE bookingID = :bookingID AND guestID = :guestID", parameters);
+            dbExecute("DELETE FROM bookingGuests WHERE bookingID = :bookingID AND guestID = :guestID", parameters);
         } catch (SQLException e) {
             return false;
         }

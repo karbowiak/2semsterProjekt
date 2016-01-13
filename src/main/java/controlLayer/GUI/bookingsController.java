@@ -77,7 +77,7 @@ public class bookingsController {
     public String getBookingID(int roomID, int bookingBureau, String fromDate, String toDate, int employeeID) {
         Map<String, String> parameters = new QuickHash(":roomID", String.valueOf(roomID), ":bookingBureau", String.valueOf(bookingBureau), ":fromDate", String.valueOf(fromDate), ":toDate", String.valueOf(toDate), ":employeeID", String.valueOf(employeeID));
         try {
-            return databaseQuery.dbQueryField("SELECT bookingID FROM roomBookings WHERE roomID = :roomID AND bookingBureau = :bookingBureau AND fromDate = :fromDate AND toDate = :toDate AND employeeID = :employeeID", "bookingID", parameters);
+            return databaseQuery.dbQueryField("SELECT bookingID FROM bookings WHERE roomID = :roomID AND bookingBureau = :bookingBureau AND fromDate = :fromDate AND toDate = :toDate AND employeeID = :employeeID", "bookingID", parameters);
         } catch (SQLException e) {
             return "";
         }

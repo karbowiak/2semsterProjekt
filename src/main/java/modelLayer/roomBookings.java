@@ -30,7 +30,7 @@ public class roomBookings {
     public ArrayList<LinkedHashMap> getAllBookings(int bookingActive) {
         Map<String, String> parameters = new QuickHash(":bookingActive", String.valueOf(bookingActive));
         try {
-            return dbQuery("SELECT * FROM roomBookings WHERE bookingActive = :bookingActive", parameters);
+            return dbQuery("SELECT * FROM bookings WHERE bookingActive = :bookingActive", parameters);
         } catch (SQLException e) {
             return null;
         }
@@ -44,7 +44,7 @@ public class roomBookings {
     public LinkedHashMap getBookingByID(int bookingID, int bookingActive) {
         Map<String, String> parameters = new QuickHash(":bookingID", String.valueOf(bookingID), ":bookingActive", String.valueOf(bookingActive));
         try {
-            return dbQueryRow("SELECT * FROM roomBookings WHERE bookingID = :bookingID AND bookingActive = :bookingActive", parameters);
+            return dbQueryRow("SELECT * FROM bookings WHERE bookingID = :bookingID AND bookingActive = :bookingActive", parameters);
         } catch (SQLException e) {
             return null;
         }
@@ -63,7 +63,7 @@ public class roomBookings {
         }
         else {
             try {
-                String queryData = dbQueryField("SELECT bookingID FROM roomBookings WHERE roomID = :roomID AND fromDate = :fromDate AND toDate = :toDate AND bookingActive = 1", "bookingID", parameters);
+                String queryData = dbQueryField("SELECT bookingID FROM bookings WHERE roomID = :roomID AND fromDate = :fromDate AND toDate = :toDate AND bookingActive = 1", "bookingID", parameters);
                 if(!Objects.equals(queryData, ""))
                     id = Integer.parseInt(queryData);
                 else
@@ -91,27 +91,27 @@ public class roomBookings {
             try {
                 // Update the fields that are set!
                 if(roomID > 0)
-                    dbExecute("UPDATE roomBookings SET roomID = :roomID WHERE bookingID = :bookingID", updateParameters);
+                    dbExecute("UPDATE bookings SET roomID = :roomID WHERE bookingID = :bookingID", updateParameters);
                 if(bookingBureau > 0)
-                    dbExecute("UPDATE roomBookings SET bookingBureau = :bookingBureau WHERE bookingID = :bookingID", updateParameters);
+                    dbExecute("UPDATE bookings SET bookingBureau = :bookingBureau WHERE bookingID = :bookingID", updateParameters);
                 if(!Objects.equals(fromDate, ""))
-                    dbExecute("UPDATE roomBookings SET fromDate = :fromDate WHERE bookingID = :bookingID", updateParameters);
+                    dbExecute("UPDATE bookings SET fromDate = :fromDate WHERE bookingID = :bookingID", updateParameters);
                 if(!Objects.equals(toDate, ""))
-                    dbExecute("UPDATE roomBookings SET toDate = :toDate WHERE bookingID = :bookingID", updateParameters);
+                    dbExecute("UPDATE bookings SET toDate = :toDate WHERE bookingID = :bookingID", updateParameters);
                 if(!Objects.equals(checkinDate, ""))
-                    dbExecute("UPDATE roomBookings SET checkinDate = :checkinDate WHERE bookingID = :bookingID", updateParameters);
+                    dbExecute("UPDATE bookings SET checkinDate = :checkinDate WHERE bookingID = :bookingID", updateParameters);
                 if(!Objects.equals(checkoutDate, ""))
-                    dbExecute("UPDATE roomBookings SET checkoutDate = :checkoutDate WHERE bookingID = :bookingID", updateParameters);
+                    dbExecute("UPDATE bookings SET checkoutDate = :checkoutDate WHERE bookingID = :bookingID", updateParameters);
                 if(priceBeforeDiscount > 0)
-                    dbExecute("UPDATE roomBookings SET priceBeforeDiscount = :priceBeforeDiscount WHERE bookingID = :bookingID", updateParameters);
+                    dbExecute("UPDATE bookings SET priceBeforeDiscount = :priceBeforeDiscount WHERE bookingID = :bookingID", updateParameters);
                 if(discount > 0)
-                    dbExecute("UPDATE roomBookings SET discount = :discount WHERE bookingID = :bookingID", updateParameters);
+                    dbExecute("UPDATE bookings SET discount = :discount WHERE bookingID = :bookingID", updateParameters);
                 if(totalPrice > 0)
-                    dbExecute("UPDATE roomBookings SET totalPrice = :totalPrice WHERE bookingID = :bookingID", updateParameters);
+                    dbExecute("UPDATE bookings SET totalPrice = :totalPrice WHERE bookingID = :bookingID", updateParameters);
                 if(employeeID > 0)
-                    dbExecute("UPDATE roomBookings SET employeeID = :employeeID WHERE bookingID = :bookingID", updateParameters);
+                    dbExecute("UPDATE bookings SET employeeID = :employeeID WHERE bookingID = :bookingID", updateParameters);
                 if(bookingActive < 1)
-                    dbExecute("UPDATE roomBookings SET bookingActive = :bookingActive WHERE bookingID = :bookingID", updateParameters);
+                    dbExecute("UPDATE bookings SET bookingActive = :bookingActive WHERE bookingID = :bookingID", updateParameters);
             } catch (SQLException e) {
                 return 0;
             }
@@ -119,7 +119,7 @@ public class roomBookings {
         else {
             // Insert
             try {
-                dbExecute("INSERT INTO roomBookings (roomID, bookingBureau, fromDate, toDate, priceBeforeDiscount, discount, totalPrice, employeeID) VALUES (:roomID, :bookingBureau, :fromDate, :toDate, :priceBeforeDiscount, :discount, :totalPrice, :employeeID)", parameters);
+                dbExecute("INSERT INTO bookings (roomID, bookingBureau, fromDate, toDate, priceBeforeDiscount, discount, totalPrice, employeeID) VALUES (:roomID, :bookingBureau, :fromDate, :toDate, :priceBeforeDiscount, :discount, :totalPrice, :employeeID)", parameters);
             } catch (SQLException e) {
                 return 0;
             }
@@ -133,7 +133,7 @@ public class roomBookings {
         // set bookingActive to 0
         Map<String, String> parameters = new QuickHash(":bookingID", String.valueOf(bookingID));
         try {
-            dbExecute("UPDATE roomBookings SET bookingActive = 0 WHERE bookingID = :bookingID", parameters);
+            dbExecute("UPDATE bookings SET bookingActive = 0 WHERE bookingID = :bookingID", parameters);
         } catch (SQLException e) {
             return false;
         }
